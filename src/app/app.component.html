@@ -1,0 +1,100 @@
+<nz-layout class="app-layout s2-hrm-layout"  *ngIf="authService.loggedIn()">
+  <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="200px" nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <a href="/">
+        <img src="../assets/images/esuhai_vuong.png" alt="logo">
+        <h1 style="margin-top: -10px;">Esuhai TTS</h1>
+      </a>
+    </div>
+
+    <ul class="menu-item" nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-menu-item>
+        <a nz-button nzType="link" routerLink="/nhanvien">
+          <span nz-icon nzType="file"></span>
+          <span>Nhân viên</span>
+        </a>
+      </li>
+
+      <li nz-menu-item>
+        <a nz-button nzType="link" routerLink="/pushnoti">
+          <span nz-icon nzType="file"></span>
+          <span>Push noti</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="s2-layout-footer" [ngClass]="isCollapsed ? 'collapse' : ''">
+      <span style="font-size: 12px;">Version: </span>
+      <span style="font-size: 12px;">{{version}}</span>
+    </div>
+
+  </nz-sider>
+
+  <nz-layout class="right-layout" [ngClass]="isCollapsed ? 'collapse' : ''">
+    <nz-header style="height: 55px; z-index: 20;">
+      <div class="app-header s2-app-header" style="height: 55px;" [ngClass]="isCollapsed ? 'collapse' : ''">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+        </span>
+
+        <div class="header-right">  
+          <nz-avatar nzSize="large" nzIcon="user" nzSrc=""
+            nz-popover nzPopoverTrigger="click" [nzPopoverContent]="popupInfomation" nzPopoverPlacement="bottomRight">
+          </nz-avatar>
+        </div>
+
+        <ng-template #popupInfomation>
+          <div>
+            <ul nz-menu class="s2-userInfo-dropdown">
+              <li nz-menu-item><i nz-icon nzType="user" nzTheme="outline"></i>Thông tin cá nhân</li>
+              <li nz-menu-item><i nz-icon nzType="logout" nzTheme="outline"></i> Logout</li>
+            </ul>
+          </div>
+        </ng-template>
+
+        <div class="s2-info-fullname">
+          <span class="s2-info-fullname-firstname">Phan</span><br />
+          <span class="s2-info-fullname-lastname">Trà</span>
+        </div>
+
+        <div class="header-right">
+          <span class="s2-notification">
+            <nz-badge [nzCount]="countNoti"
+             nz-popover nzPopoverTitle="Thông báo" 
+             nzPopoverTrigger="click" 
+             [nzPopoverContent]="popupNotifications"
+             nzPopoverPlacement="bottom"
+             nzPopoverOverlayClassName="notification-content">
+              <span class="s2-notification-head">
+                <i nz-icon nzType="notification" nzTheme="fill" style="font-size: 16px;"></i>
+              </span>
+            </nz-badge>
+
+            <ng-template #popupNotifications>
+              <p *ngIf="listNoti.length <= 0" style="text-align: center;">Không có thông báo<span nz-icon nzType="stop" nzTheme="outline"  style="margin-left: 10px; color: red;"></span></p>
+
+              <ul class="list-noti" *ngIf="listNoti.length > 0">
+                <li *ngFor="let data of listNoti.slice(0, 6)">
+                  {{data}}
+                </li>
+              </ul>
+
+              <div *ngIf="listNoti.length > 6" style="text-align: right;">
+                <a nz-button nzType="link" routerLink="">
+                  <span>Xem tất cả</span>
+                </a>
+              </div>
+            </ng-template>
+          </span>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <app-breadcrumb></app-breadcrumb>
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
+
+<app-login *ngIf="!authService.loggedIn()" style="width: 99%"></app-login>

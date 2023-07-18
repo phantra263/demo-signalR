@@ -1,0 +1,25 @@
+<nz-card class="pushnoti">
+  <div class="wrap-content">
+    <div class="block">
+      <button nz-button nzType="default" (click)="sendMessage()"><span nz-icon nzType="plus" nzTheme="outline"></span>Push All</button>
+    </div>
+    <div class="block">
+      <button nz-button nzType="default" (click)="sendMessage()"><span nz-icon nzType="plus" nzTheme="outline"></span>Push Only</button>
+      <nz-radio-group [(ngModel)]="dataOnly.id" nzName="radiogroup" style="width: 100%; margin-top: 20px;">
+        <label  *ngFor="let data of listData" nz-radio [nzValue]="data.id">{{data.firstName}}</label>
+      </nz-radio-group>
+    </div>
+    <div class="block">
+      <button nz-button nzType="default" (click)="sendMessage()"><span nz-icon nzType="plus" nzTheme="outline"></span>Push Any User</button>
+      <nz-checkbox-wrapper style="width: 100%; margin-top: 20px;" (nzOnChange)="addDataAnyUser($event)">
+        <label *ngFor="let data of listData" nz-checkbox [nzValue]="data.id">{{data.firstName}}</label>
+      </nz-checkbox-wrapper>
+    </div>
+    <div class="block">
+      <button nz-button nzType="default" (click)="sendMessage()"><span nz-icon nzType="plus" nzTheme="outline"></span>Push Group</button>
+      <nz-checkbox-wrapper style="width: 100%; margin-top: 20px;" (nzOnChange)="addDataAnyGroup($event)">
+        <label *ngFor="let data of listGroup" nz-checkbox [nzValue]="data.id">{{data.groupName}}</label>
+      </nz-checkbox-wrapper>
+    </div>
+  </div>
+</nz-card>

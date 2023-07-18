@@ -1,0 +1,171 @@
+<nz-card class="listnhanvien">
+    <!-- Action bar -->
+    <div nz-row [nzGutter]="24" class="s2-action-bar">
+      <div nz-col nzFlex="150px">
+        <nz-form-item>
+          <nz-form-label>Tổng số</nz-form-label>
+          <nz-form-control>
+            <nz-badge nzStandalone [nzCount]="10" [nzStyle]="{ backgroundColor: '#108ee9' }" [nzShowZero]="true"
+              [nzOverflowCount]="9999"></nz-badge>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+  
+      <div nz-col nzFlex="auto"></div>
+
+      <div nz-col nzFlex="90px">
+        <button nz-button nzType="default" (click)="showForm = true"><span nz-icon nzType="plus" nzTheme="outline"></span>Thêm mới</button>
+      </div>
+  
+      <div nz-col nzFlex="300px">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzSuffix]="suffixIconSearch" nzSize="default">
+              <input [(ngModel)]="filterParams.Keyword" type="text" nz-input placeholder="tìm kiếm..." />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+              <i nz-icon nzType="search"></i>
+            </ng-template>
+  
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+  
+    </div>
+    <!--/ Action bar -->
+  
+    <!-- Table -->
+    <nz-table #tblList [nzData]="listDataDisplay" nzFrontPagination nzShowSizeChanger class="list"
+      [nzTotal]="totalItems" [nzPageSize]="filterParams.PageSize" [nzPageIndex]="filterParams.PageNumber"
+     [nzScroll]="{x: 'auto', y: 'calc(100vh - 150px)' }" nzBordered>
+
+      <thead>
+        <tr>
+          <th nzWidth="70px">Avatar</th>
+          <th nzWidth="120px">Mã Nhân viên</th>
+          <th nzWidth="170px">Họ tên</th>
+          <th nzWidth="120px">Ngày sinh</th>
+          <th nzWidth="80px">Giới tính</th>
+          <th nzWidth="200px">Quê quán</th>
+          <th nzWidth="120px">Tôn giáo</th>
+          <th nzWidth="120px">Phòng ban</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of tblList.data">
+          <td class="t-center">
+            <div class="avatar" nz-tooltip [nzTooltipTitle]="titleTemplate" [nzTooltipColor]="'#87d068'">
+              <img [src]="data.avatarThumb" alt="">
+            </div>
+
+            <ng-template #titleTemplate let-thing>
+              <div class="tooltip-avatar">
+                <img style="width: 200px; height: 200px; object-fit: cover; margin: auto; display: block;" [src]="data.avatarThumb" alt="">
+                <p style="font-size: 20px;
+                          margin-bottom: 0;
+                          font-weight: bold;">
+                          {{data.hoTen}}</p>
+                <p>{{data.chucVu}} ({{data.phongBan}})</p>
+              </div>
+            </ng-template>
+          </td>
+          <td>
+            <button nz-button nzType="link" [routerLink] = "['chitiet', data.maNhanVien]">{{data.maNhanVien}}</button>
+          </td>
+          <td>{{data.hoTen}}</td>
+          <td>{{data.ngaySinh}}</td>
+          <td>{{data.gioiTinh}}</td>
+          <td>{{data.queQuan}}</td>
+          <td>{{data.tonGiao}}</td>
+          <td>{{data.phongBan}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+    <!-- Thêm mới -->
+    <nz-drawer [nzVisible]="showForm" nzTitle="Thêm nhân viên mới" (nzOnClose)="closeForm()" [nzMaskClosable]="false"
+    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', padding: '15px 15px 53px 15px' }"
+    [nzFooter]="footerTpl" nzWidth="1000px">
+
+    <!-- content -->
+    <div class="wrap-content">
+      <div class="first-infor">
+        <div class="img-avatar first-block">
+          <input type="file" (change)="previewAndUploadImage($event)" hidden #fileInput />  
+          <button nz-button (click)="fileInput.click()">
+            <span nz-icon nzType="upload"></span>
+            {{ previewImageSrc ? "Thay đổi ảnh": "Tải lên ảnh avatar" }}
+          </button>
+          <img *ngIf="previewImageSrc" [src]="previewImageSrc" alt="Preview" />
+        </div>
+        <div class="right-head first-block">
+          <nz-form-item class="field-infor">
+            <label class="label-detail">Họ tên:</label>
+            <nz-form-control>
+              <input class="input-detail" nz-input placeholder="Họ tên..." nzSize="default"
+                [(ngModel)]="newNhanSu.maSoKhachHang" />
+            </nz-form-control>
+          </nz-form-item>
+    
+          <nz-form-item class="field-infor">
+            <label class="label-detail">Ngày sinh:</label>
+            <nz-form-control>
+              <nz-date-picker nzMode="date" [(ngModel)]="newNhanSu.ngaySinh" nzFormat="dd/MM/yyyy" style="width: 130px"
+                nzInputReadOnly="true" nzAllowClear></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+    
+          <nz-form-item class="field-infor">
+            <label class="label-detail">Giới tính:</label>
+            <nz-form-control>
+              <nz-select [(ngModel)]="newNhanSu.gioiTinh" name="gioiTinh" id="gioiTinh" nzPlaceHolder="Chọn" nzShowSearch
+              nzAllowClear>
+                <nz-option nzValue="nam" nzLabel="Nam"></nz-option>
+                <nz-option nzValue="nu" nzLabel="Nữ"></nz-option>
+                <nz-option nzValue="khac" nzLabel="Khác"></nz-option>
+            </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div class="second-infor">
+        <nz-form-item class="field-infor">
+          <label class="label-detail">Quê quán:</label>
+          <nz-form-control>
+            <input class="input-detail" nz-input placeholder="Quê quán..." nzSize="default"
+              [(ngModel)]="newNhanSu.queQuan" />
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item class="field-infor">
+          <label class="label-detail">Chức vụ:</label>
+          <nz-form-control>
+            <input class="input-detail" nz-input placeholder="Nhập mã số KH..." nzSize="default"
+              [(ngModel)]="newNhanSu.chucVu" />
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item class="field-infor">
+          <label class="label-detail">Phòng ban:</label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="newNhanSu.phongBan" name="gioiTinh" id="gioiTinh" nzPlaceHolder="Chọn" nzShowSearch
+            nzAllowClear>
+              <nz-option nzValue="ict" nzLabel="ICT"></nz-option>
+              <nz-option nzValue="ke toán" nzLabel="Kế toán"></nz-option>
+              <nz-option nzValue="khac" nzLabel="Khác"></nz-option>
+          </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <ng-template #footerTpl>
+      <div>
+        <button nz-button nzType="primary">Thêm</button>
+
+        <button nz-button nzType="default" (click)="showForm = false" style="margin-right: 8px;">Hủy</button>
+      </div>
+    </ng-template>
+  </nz-drawer>
+</nz-card>

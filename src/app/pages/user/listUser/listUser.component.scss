@@ -1,0 +1,88 @@
+.t-center {
+  text-align: center;
+}
+.list {
+  th {
+    padding: 5px 10px; 
+    text-align: center 
+  }
+  td {
+    padding: 10px 5px
+  }
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto;
+    img {
+      width: 100%;
+      height: inherit;
+      object-fit: cover;
+    }
+  }
+  ::ng-deep .tooltip-avatar {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: inherit;
+      object-fit: cover;
+    }
+    p {
+      font-size: 25px;
+      font-weight: bold;
+      color: red;
+    }
+  }
+}
+
+.wrap-content {
+  .first-infor {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    .first-block {
+      width: calc(50% - 12px);
+      &.img-avatar {
+        margin-right: 12px;
+        text-align: center;
+        height: 165px;
+        line-height: 165px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        img {
+          width: 150px;
+          height: 150px;
+          object-fit: cover;
+          margin-left: 10px;
+        }
+      }
+      &.right-head {
+        .field-infor {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .second-infor {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .field-infor {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: calc(50% - 12px);
+    margin-right: 12px;
+  }
+  .field-infor .label-detail {
+    width: 120px;
+    text-align: right;
+    white-space: normal;
+    height: inherit;
+    margin: 0 8px 0 0;
+  }
+}

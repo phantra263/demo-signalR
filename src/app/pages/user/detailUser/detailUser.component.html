@@ -1,0 +1,66 @@
+<nz-card>
+
+  <nz-page-header class="site-page-header" nzBackIcon>
+    <nz-page-header-title>#{{itemDetailModel.maNhanVien}}</nz-page-header-title>
+    
+    <nz-page-header-subtitle>
+      <span nz-icon nzType="fire" nzTheme="fill" style="color:red; font-size: 20px;"></span>
+    </nz-page-header-subtitle>
+    
+    <nz-page-header-extra>
+      <nz-space>
+        <!-- <button *nzSpaceItem nz-button>Operation</button> -->
+        <button *nzSpaceItem nz-button (click)="openForm()">
+          <span nz-icon nzType="profile" nzTheme="outline"></span>Chỉnh sửa</button>
+        <button *nzSpaceItem nz-button nzType="primary" nzDanger>Xóa</button>
+      </nz-space>
+    </nz-page-header-extra>
+    
+    <nz-page-header-content>
+      <div class="content">
+        <div class="main">
+          <nz-descriptions nzSize="small" [nzColumn]="2">
+            <nz-descriptions-item nzTitle="Họ tên" [nzSpan]="1">{{itemDetailModel.hoTen}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Ngày sinh" [nzSpan]="1">{{itemDetailModel.ngaySinh}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Giới tính" [nzSpan]="1">{{itemDetailModel.gioiTinh}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Tôn giáo" [nzSpan]="1">{{itemDetailModel.tonGiao}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Quê quán" [nzSpan]="2">{{itemDetailModel.queQuan}}</nz-descriptions-item>
+          </nz-descriptions>
+        </div>
+      </div>
+    </nz-page-header-content>
+  </nz-page-header>
+</nz-card>
+
+
+
+<nz-drawer [nzVisible]="showForm" nzTitle="#{{itemDetailModel.maNhanVien}} | THÔNG TIN NHÂN VIÊN" (nzOnClose)="closeForm()" [nzMaskClosable]="false"
+  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', padding: '15px 15px 53px 15px' }"
+  [nzFooter]="footerTpl" nzWidth="1000px">
+
+  <!-- chỉnh sửa ảnh -->
+  <div class="wrap-crop">
+    <input type="file" (change)="onFileSelected($event)" accept="image/*">
+    <image-cropper 
+      *ngIf="selectedImage"
+      [imageChangedEvent]="selectedImage"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="4 / 3"
+      (imageCropped)="onImageCropped($event)"
+    ></image-cropper>
+    <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image">
+  </div>
+  
+  <ng-template #footerTpl>
+    <div style="float: left">
+      <button nz-button nzType="primary" style="margin-right: 8px;" (click)="save()">
+        Lưu
+      </button>
+      <button type="button" (click)="closeForm()" style="margin-right: 8px;">
+        <span>Hủy</span>
+      </button>
+    </div>
+  </ng-template>
+
+</nz-drawer>
+<!-- Form edit/ add new -->
