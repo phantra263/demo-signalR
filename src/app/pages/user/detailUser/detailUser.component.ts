@@ -23,7 +23,7 @@ export class DetailUserComponent implements OnInit {
     avatar: 'https://picsum.photos/200/300',
     maNhanVien: 'HS22323',
     hoTen: "Phan công trà",
-    ngaySinh: "26/03/1998",
+    ngaySinh: "26-03-1998",
     gioiTinh: "Nam",
     queQuan: "Quảng nam",
     tonGiao: "Không",

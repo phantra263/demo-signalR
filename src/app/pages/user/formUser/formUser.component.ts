@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Dimensions, ImageCroppedEvent, ImageTransform } from '../image-cropper/interfaces/index';
 import {base64ToFile} from '../image-cropper/utils/blob.utils';
 
@@ -8,6 +8,8 @@ import {base64ToFile} from '../image-cropper/utils/blob.utils';
   styleUrls: ['./formUser.component.scss']
 })
 export class FormUserComponent implements OnInit {
+  @ViewChild('imageCropper') imageCropper: any;
+
   @Input() user: any;
   @Input() showForm: boolean;
   @Input() titleForm: string;
@@ -25,7 +27,13 @@ export class FormUserComponent implements OnInit {
   selectedImage: any;
   VisibleModalEdit: boolean = false;
   previewImageSrc: string;
-  constructor() { }
+  flagCropperReady: boolean = false;
+  imageOriginWidth: number = 0;
+  imageOriginHeight: number = 0;
+  imageCutWidth: number = 0;
+  imageCutHeight: number = 0;
+  constructor(
+  ) { }
 
   ngOnInit() {
     this.previewImageSrc = this.user ? this.user.avatar : '';
@@ -46,11 +54,21 @@ export class FormUserComponent implements OnInit {
   }
 
   cropperReady(sourceImageDimensions: Dimensions) {
+    // cắt ảnh ở lần đầu tiên
+    this.startCrop();
+    this.onImageDataChange();
+
+    this.flagCropperReady = true;
     console.log('Cropper ready', sourceImageDimensions);
   }
 
   loadImageFailed() {
     console.log('Load failed');
+  }
+
+  startCrop() {
+    console.log('123');
+    this.imageCropper.crop();
   }
 
   rotateLeft() {
@@ -86,6 +104,34 @@ export class FormUserComponent implements OnInit {
     ...this.transform,
     flipV: !this.transform.flipV
     };
+  }
+
+  // Function to get the image size (dimensions) when it's loaded
+  getImageSize(imageUrl: string) {
+    const img = new Image();
+    img.src = imageUrl;
+    img.onload = () => {
+      this.imageOriginWidth = img.naturalWidth;
+      this.imageOriginHeight = img.naturalHeight;
+    };
+  }
+
+  onImageDataChange() {
+    if (this.user.avatar) {
+      this.getImageSize(this.user.avatar);
+    }
+  }
+
+  onImageLoad(event: Event) {
+    // This function will be called when the image is loaded or changed.
+    // Access the image element to get its dimensions.
+    const imageElement = event.target as HTMLImageElement;
+    this.imageCutWidth = imageElement.naturalWidth;
+    this.imageCutHeight = imageElement.naturalHeight;
+  }
+
+  onCropMove(event) {
+    console.log(event)
   }
 
   fncloseForm() {

@@ -9,7 +9,7 @@
     .first-block {
       width: calc(50% - 12px);
       &.img-avatar {
-        margin-left: 12px;
+        margin-right: 12px;
         text-align: center;
         height: 165px;
         line-height: 165px;
@@ -19,7 +19,7 @@
           width: 150px;
           height: 150px;
           object-fit: cover;
-          margin-left: 10px;
+          margin-right: 10px;
         }
       }
       &.right-head {
@@ -47,5 +47,37 @@
     white-space: normal;
     height: inherit;
     margin: 0 8px 0 0;
+  }
+}
+::ng-deep .modal-edit-image {
+  .ant-modal-body {
+    max-height: calc(100vh - 150px);
+    min-height: calc(100vh - 150px);
+    overflow: auto;
+  }
+  .content-modal {
+    .btn-group {
+      margin-bottom: 20px;
+      button {
+        margin-right: 10px;
+      }
+    }
+    .wrap-crop-image {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      .image-crop, 
+      .image-preview {
+        img {
+          width: 300px;
+          height: 300px;
+        }
+      }
+      .label-img {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+    }
   }
 }

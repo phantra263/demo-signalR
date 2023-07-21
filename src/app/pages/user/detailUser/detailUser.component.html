@@ -33,7 +33,7 @@
 
 <!-- form edit -->
 <app-formUser [user]="itemDetailModel" 
-              [titleForm]="itemDetailModel.hoTen + '|' + itemDetailModel.maNhanVien "
+              [titleForm]="itemDetailModel.maNhanVien + ' | ' + itemDetailModel.hoTen "
               [showForm]="showForm"
               (closeDraw$)="closeForm()"
               (saveDraw$)="saveForm()">
