@@ -1,7 +1,7 @@
 <nz-card>
 
   <nz-page-header class="site-page-header" nzBackIcon>
-    <nz-page-header-title>#{{itemDetailModel.maNhanVien}}</nz-page-header-title>
+    <nz-page-header-title>{{itemDetailModel.hoTen}} ({{itemDetailModel.maNhanVien}})</nz-page-header-title>
     
     <nz-page-header-subtitle>
       <span nz-icon nzType="fire" nzTheme="fill" style="color:red; font-size: 20px;"></span>
@@ -9,7 +9,6 @@
     
     <nz-page-header-extra>
       <nz-space>
-        <!-- <button *nzSpaceItem nz-button>Operation</button> -->
         <button *nzSpaceItem nz-button (click)="openForm()">
           <span nz-icon nzType="profile" nzTheme="outline"></span>Chỉnh sửa</button>
         <button *nzSpaceItem nz-button nzType="primary" nzDanger>Xóa</button>
@@ -32,35 +31,10 @@
   </nz-page-header>
 </nz-card>
 
-
-
-<nz-drawer [nzVisible]="showForm" nzTitle="#{{itemDetailModel.maNhanVien}} | THÔNG TIN NHÂN VIÊN" (nzOnClose)="closeForm()" [nzMaskClosable]="false"
-  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', padding: '15px 15px 53px 15px' }"
-  [nzFooter]="footerTpl" nzWidth="1000px">
-
-  <!-- chỉnh sửa ảnh -->
-  <div class="wrap-crop">
-    <input type="file" (change)="onFileSelected($event)" accept="image/*">
-    <image-cropper 
-      *ngIf="selectedImage"
-      [imageChangedEvent]="selectedImage"
-      [maintainAspectRatio]="true"
-      [aspectRatio]="4 / 3"
-      (imageCropped)="onImageCropped($event)"
-    ></image-cropper>
-    <img *ngIf="croppedImage" [src]="croppedImage" alt="Cropped Image">
-  </div>
-  
-  <ng-template #footerTpl>
-    <div style="float: left">
-      <button nz-button nzType="primary" style="margin-right: 8px;" (click)="save()">
-        Lưu
-      </button>
-      <button type="button" (click)="closeForm()" style="margin-right: 8px;">
-        <span>Hủy</span>
-      </button>
-    </div>
-  </ng-template>
-
-</nz-drawer>
-<!-- Form edit/ add new -->
+<!-- form edit -->
+<app-formUser [user]="itemDetailModel" 
+              [titleForm]="itemDetailModel.hoTen + '|' + itemDetailModel.maNhanVien "
+              [showForm]="showForm"
+              (closeDraw$)="closeForm()"
+              (saveDraw$)="saveForm()">
+</app-formUser>

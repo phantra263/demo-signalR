@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.25.24:5252',
+  apiUrl: 'http://192.168.2.173',
   fileUrl: 'http://192.168.25.24:5050/Resources',
   secretKey: '00000000-0000-0000-0000-000000000000',
   infoApp: {

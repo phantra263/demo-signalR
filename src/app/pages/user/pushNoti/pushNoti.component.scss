@@ -1,0 +1,15 @@
+.pushnoti {
+  min-height: calc(100vh - 120px);
+}
+.wrap-content {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  .block {
+    width: 50%;
+    border: 1px solid #eee;
+    min-height: 120px;
+    text-align: center;
+    padding: 10px;
+  }
+}

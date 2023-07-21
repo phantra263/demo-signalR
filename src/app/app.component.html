@@ -22,6 +22,13 @@
           <span>Push noti</span>
         </a>
       </li>
+
+      <li nz-menu-item>
+        <a nz-button nzType="link" routerLink="/listnoti">
+          <span nz-icon nzType="file"></span>
+          <span>List noti</span>
+        </a>
+      </li>
     </ul>
 
     <div class="s2-layout-footer" [ngClass]="isCollapsed ? 'collapse' : ''">
@@ -48,21 +55,23 @@
           <div>
             <ul nz-menu class="s2-userInfo-dropdown">
               <li nz-menu-item><i nz-icon nzType="user" nzTheme="outline"></i>Thông tin cá nhân</li>
-              <li nz-menu-item><i nz-icon nzType="logout" nzTheme="outline"></i> Logout</li>
+              <li nz-menu-item (click)="ngLogout()"><i nz-icon nzType="logout" nzTheme="outline"></i> Logout</li>
             </ul>
           </div>
         </ng-template>
 
         <div class="s2-info-fullname">
-          <span class="s2-info-fullname-firstname">Phan</span><br />
-          <span class="s2-info-fullname-lastname">Trà</span>
+          <span class="s2-info-fullname-firstname">{{authService.currentUser.firstName}}</span><br />
+          <span class="s2-info-fullname-lastname">{{authService.currentUser.lastName}}</span>
         </div>
 
         <div class="header-right">
           <span class="s2-notification">
             <nz-badge [nzCount]="countNoti"
              nz-popover nzPopoverTitle="Thông báo" 
-             nzPopoverTrigger="click" 
+             [nzPopoverTrigger]="'click'" 
+             (click)="tooltipVisible = true"
+             [nzPopoverVisible]="tooltipVisible"
              [nzPopoverContent]="popupNotifications"
              nzPopoverPlacement="bottom"
              nzPopoverOverlayClassName="notification-content">
@@ -72,16 +81,24 @@
             </nz-badge>
 
             <ng-template #popupNotifications>
-              <p *ngIf="listNoti.length <= 0" style="text-align: center;">Không có thông báo<span nz-icon nzType="stop" nzTheme="outline"  style="margin-left: 10px; color: red;"></span></p>
+              <p *ngIf="listNoti.length <= 0" style="text-align: center; font-size: 20px; font-weight: bold;">Không có thông báo<span nz-icon nzType="stop" nzTheme="outline"  style="margin-left: 10px; color: red;"></span></p>
 
               <ul class="list-noti" *ngIf="listNoti.length > 0">
-                <li *ngFor="let data of listNoti.slice(0, 6)">
-                  {{data}}
+                <li *ngFor="let data of listNoti.slice(0, 6)" (click)="fnSeen(data.id)">
+                  <div class="avatar">
+                    <img src="https://picsum.photos/200/200" alt="">
+                  </div>
+                  <div class="content-noti" [ngStyle]="{'opacity': data.isRead ? '0.5' : ''}">
+                    <p class="line-clamp"><b>{{ data.lastName }} {{ data.firstName }}</b> {{ data.content }}</p>
+                    <time [ngStyle]="{'color': data.isRead ? '' : 'hsl(214, 89%, 52%)'}">{{data.createAt | timeAgo}}</time>
+                  </div>
+
+                  <span class="mark" *ngIf="!data.isRead"></span>
                 </li>
               </ul>
 
               <div *ngIf="listNoti.length > 6" style="text-align: right;">
-                <a nz-button nzType="link" routerLink="">
+                <a nz-button nzType="link" (click)="showModalAllNoti()">
                   <span>Xem tất cả</span>
                 </a>
               </div>
@@ -96,5 +113,29 @@
     </nz-content>
   </nz-layout>
 </nz-layout>
+
+<!-- modal nptify -->
+<nz-modal [(nzVisible)]="isVisibleModal" nzTitle="Tất cả thông báo" [nzClassName]="'modal-all-noti'"  [nzStyle]="{ top: '20px' }"
+    (nzOnCancel)="handleCancelModal()" [nzWidth]="'900px'">
+  <div *nzModalContent class="notification-content content-modal">
+    <ul class="list-noti" *ngIf="listNoti.length > 0">
+      <li *ngFor="let data of listNoti" (click)="fnSeen(data.id)">
+        <div class="avatar">
+          <img src="https://picsum.photos/200/200" alt="">
+        </div>
+        <div class="content-noti" [ngStyle]="{'opacity': data.isRead ? '0.5' : ''}">
+          <p><b>{{ data.lastName }} {{ data.firstName }}</b> {{ data.content }}</p>
+          <time [ngStyle]="{'color': data.isRead ? '' : 'hsl(214, 89%, 52%)'}">{{data.createAt | timeAgo}}</time>
+        </div>
+
+        <span class="mark" *ngIf="!data.isRead"></span>
+      </li>
+    </ul>
+  </div>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancelModal()">Cancel</button>
+    <button nz-button nzType="primary" (click)="fnSeen()">Seen all</button>
+  </div>
+</nz-modal>
 
 <app-login *ngIf="!authService.loggedIn()" style="width: 99%"></app-login>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { Dimensions, ImageCroppedEvent, ImageTransform } from '../image-cropper/interfaces/index';
+import {base64ToFile} from '../image-cropper/utils/blob.utils';
 
 
 @Component({
@@ -8,6 +9,14 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
   styleUrls: ['./detailUser.component.css']
 })
 export class DetailUserComponent implements OnInit {
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  canvasRotation = 0;
+  rotation = 0;
+  scale = 1;
+  showCropper = false;
+  containWithinAspectRatio = true;
+  transform: ImageTransform = {};
 
   itemDetailModel:any = {
     avatarThumb: 'https://picsum.photos/200/300',
@@ -24,7 +33,7 @@ export class DetailUserComponent implements OnInit {
 
   showForm: boolean = false;
   selectedImage: any;
-  croppedImage: any;
+  VisibleModalEdit: boolean = false;
 
   constructor() { }
 
@@ -35,23 +44,21 @@ export class DetailUserComponent implements OnInit {
     this.showForm = true;
   }
 
-  save() {}
+  saveForm() {}
 
   closeForm() {
     this.showForm = false
   }
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.selectedImage = reader.result;
-      };
-    }
+
+  handleCancelModal() {
+    this.VisibleModalEdit = false;
   }
 
-  onImageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
+  fnSaveEditImage() {
+
+  }
+
+  openEditImage() {
+    this.VisibleModalEdit = true;
   }
 }

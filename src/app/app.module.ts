@@ -13,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
-import { ImageCropperModule } from 'ngx-image-cropper';
+import { ImageCropperModule } from './pages/user/image-cropper/image-cropper.module';
 import { SignalRService } from './services/signalr.service';
 
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -66,6 +66,9 @@ import { ListUserComponent } from './pages/user/listUser/listUser.component';
 import { DetailUserComponent } from './pages/user/detailUser/detailUser.component';
 import { PushNotiComponent } from './pages/user/pushNoti/pushNoti.component';
 import { LoginComponent } from './pages/login/login.component';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { ListNotiComponent } from './pages/user/listNoti/listNoti.component';
+import { FormUserComponent } from './pages/user/formUser/formUser.component';
 
 registerLocaleData(en);
 
@@ -76,9 +79,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 
 @NgModule({
   declarations: [
+    TimeAgoPipe,
     AppComponent,
     BreadcrumbComponent,
 
+    FormUserComponent,
+    ListNotiComponent,
     DetailUserComponent,
     ListUserComponent,
     PushNotiComponent,

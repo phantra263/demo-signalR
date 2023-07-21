@@ -81,91 +81,10 @@
         </tr>
       </tbody>
     </nz-table>
-
-    <!-- Thêm mới -->
-    <nz-drawer [nzVisible]="showForm" nzTitle="Thêm nhân viên mới" (nzOnClose)="closeForm()" [nzMaskClosable]="false"
-    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', padding: '15px 15px 53px 15px' }"
-    [nzFooter]="footerTpl" nzWidth="1000px">
-
-    <!-- content -->
-    <div class="wrap-content">
-      <div class="first-infor">
-        <div class="img-avatar first-block">
-          <input type="file" (change)="previewAndUploadImage($event)" hidden #fileInput />  
-          <button nz-button (click)="fileInput.click()">
-            <span nz-icon nzType="upload"></span>
-            {{ previewImageSrc ? "Thay đổi ảnh": "Tải lên ảnh avatar" }}
-          </button>
-          <img *ngIf="previewImageSrc" [src]="previewImageSrc" alt="Preview" />
-        </div>
-        <div class="right-head first-block">
-          <nz-form-item class="field-infor">
-            <label class="label-detail">Họ tên:</label>
-            <nz-form-control>
-              <input class="input-detail" nz-input placeholder="Họ tên..." nzSize="default"
-                [(ngModel)]="newNhanSu.maSoKhachHang" />
-            </nz-form-control>
-          </nz-form-item>
-    
-          <nz-form-item class="field-infor">
-            <label class="label-detail">Ngày sinh:</label>
-            <nz-form-control>
-              <nz-date-picker nzMode="date" [(ngModel)]="newNhanSu.ngaySinh" nzFormat="dd/MM/yyyy" style="width: 130px"
-                nzInputReadOnly="true" nzAllowClear></nz-date-picker>
-            </nz-form-control>
-          </nz-form-item>
-    
-          <nz-form-item class="field-infor">
-            <label class="label-detail">Giới tính:</label>
-            <nz-form-control>
-              <nz-select [(ngModel)]="newNhanSu.gioiTinh" name="gioiTinh" id="gioiTinh" nzPlaceHolder="Chọn" nzShowSearch
-              nzAllowClear>
-                <nz-option nzValue="nam" nzLabel="Nam"></nz-option>
-                <nz-option nzValue="nu" nzLabel="Nữ"></nz-option>
-                <nz-option nzValue="khac" nzLabel="Khác"></nz-option>
-            </nz-select>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-      </div>
-
-      <div class="second-infor">
-        <nz-form-item class="field-infor">
-          <label class="label-detail">Quê quán:</label>
-          <nz-form-control>
-            <input class="input-detail" nz-input placeholder="Quê quán..." nzSize="default"
-              [(ngModel)]="newNhanSu.queQuan" />
-          </nz-form-control>
-        </nz-form-item>
-  
-        <nz-form-item class="field-infor">
-          <label class="label-detail">Chức vụ:</label>
-          <nz-form-control>
-            <input class="input-detail" nz-input placeholder="Nhập mã số KH..." nzSize="default"
-              [(ngModel)]="newNhanSu.chucVu" />
-          </nz-form-control>
-        </nz-form-item>
-  
-        <nz-form-item class="field-infor">
-          <label class="label-detail">Phòng ban:</label>
-          <nz-form-control>
-            <nz-select [(ngModel)]="newNhanSu.phongBan" name="gioiTinh" id="gioiTinh" nzPlaceHolder="Chọn" nzShowSearch
-            nzAllowClear>
-              <nz-option nzValue="ict" nzLabel="ICT"></nz-option>
-              <nz-option nzValue="ke toán" nzLabel="Kế toán"></nz-option>
-              <nz-option nzValue="khac" nzLabel="Khác"></nz-option>
-          </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
-
-    <ng-template #footerTpl>
-      <div>
-        <button nz-button nzType="primary">Thêm</button>
-
-        <button nz-button nzType="default" (click)="showForm = false" style="margin-right: 8px;">Hủy</button>
-      </div>
-    </ng-template>
-  </nz-drawer>
+  <!-- Thêm mới -->
+  <app-formUser [user]="newUser" 
+                [titleForm]="'Thông tin nhân viên'"
+                [showForm]="showForm"
+                (closeDraw$)="fnCloseForm()"
+                (saveDraw$)="fnSaveForm()"></app-formUser>
 </nz-card>

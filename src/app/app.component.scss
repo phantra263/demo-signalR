@@ -237,16 +237,84 @@ ul.s2-i18n-ul > li:hover { background-color: #fafafa; }
 ul.s2-i18n-ul > li > img { margin-right: 5px; width: 30px; }
 
 ::ng-deep .notification-content {
-  width: 328px; 
+  width: 370px;
+  max-height: calc(100vh - 100px);
+  overflow: hidden auto;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  ::ng-deep &.content-modal {
+    width: 100%;
+    max-height: fit-content;
+    overflow: auto;
+    box-shadow: none;
+  }
+  .ant-popover-arrow {
+    left: 57% !important;
+  }
   .list-noti{
     padding-left: 0;
     list-style-type: none;
+    .line-clamp {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;  
+      overflow: hidden;
+    }
     li {
-      border-bottom: 1px solid #eee;
-      padding: 10px 0 10px;
+      // border-bottom: 1px solid #eee;
+      padding: 10px 5px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      &:hover {
+        background-color: #eee;
+      }
+      .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: inherit;
+          object-fit: cover;
+        }
+      }
+      .content-noti {
+        flex: 1;
+        margin-left: 8px;
+        p {
+          font-size: 16px;
+          margin-bottom: 0;
+          padding-right: 9px;
+        }
+        time {
+          font-size: 12px;
+        }
+      }
+      .mark {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: hsl(214, 89%, 52%);
+        border-radius: 50%;
+        top: 50%;
+        right: 5px;
+        transform: translateY(-50%);
+      }
       &:last-child {
         border-bottom: 0;
       }
     }
+  }
+}
+::ng-deep .modal-all-noti {
+  .ant-modal-body {
+    max-height: calc(100vh - 150px);
+    overflow: auto;
   }
 }

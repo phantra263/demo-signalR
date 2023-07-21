@@ -4,7 +4,7 @@ import { SignalRService } from 'src/app/services/signalr.service';
 @Component({
   selector: 'app-pushNoti',
   templateUrl: './pushNoti.component.html',
-  styleUrls: ['./pushNoti.component.css']
+  styleUrls: ['./pushNoti.component.scss']
 })
 export class PushNotiComponent implements OnInit {
 
@@ -20,26 +20,17 @@ export class PushNotiComponent implements OnInit {
       avatar: "/Avatars/vinhhq.jpg"
     },
     {
-      id: "4A62A822-0667-4E68-996A-501209321232",
-      userName: "A013",
-      email: "vinhhq@esuhai.com",
+      id: "FC938DD7-F4ED-4CD0-A7AA-975BC0D06D67",
+      userName: "S602",
+      email: "trapc@esuhai.com",
       roles: null,
       isVerified: false,
-      firstName: "tra",
-      lastName: "Phan",
-      avatar: "/Avatars/vinhhq.jpg"
-    },
-    {
-      id: "4A62A822-0667-4E68-996A-50120941231231",
-      userName: "A013",
-      email: "vinhhq@esuhai.com",
-      roles: null,
-      isVerified: false,
-      firstName: "Nam",
-      lastName: "Teest",
-      avatar: "/Avatars/vinhhq.jpg"
-    }
+      firstName: "Trà",
+      lastName: "Phan Công",
+      avatar: "/Avatars/trapc.jpg"
+  }
   ];
+  
 
   listGroup: any = [
     {
@@ -56,7 +47,6 @@ export class PushNotiComponent implements OnInit {
     },
   ];
   
-  dataOnly: any = {};
   dataAnyUser: any = [];
   dataAnyGroup: any = [];
   constructor(private signalRService: SignalRService) {}
@@ -73,7 +63,28 @@ export class PushNotiComponent implements OnInit {
     this.dataAnyGroup = value
   }
 
-  sendMessage(): void {
-    this.signalRService.sendMessage('vinh', 'da gui');
+  sendMessageAll(): void {
+    const user = JSON.parse(localStorage.getItem('ttsuser'));
+    const dateCurrent = new Date();
+    this.signalRService.sendMessage({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      SenderId: user.id,
+      Content: '(push all) Cập nhật trạng thái của đơn tuyển xxxx',
+      CreateAt: dateCurrent,
+    });
+  }
+
+  sendMessageAny(): void {
+    const user = JSON.parse(localStorage.getItem('ttsuser'));
+    const dateCurrent = new Date();
+    this.signalRService.sendMessageObject({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      SenderId: user.id,
+      Content: '(push any)Cập nhật trạng thái của đơn tuyển xxxx',
+      CreateAt: dateCurrent,
+      ReceiverIds: this.dataAnyUser
+    });
   }
 }

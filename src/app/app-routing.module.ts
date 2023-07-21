@@ -6,6 +6,7 @@ import { ListUserComponent } from './pages/user/listUser/listUser.component';
 import { DetailUserComponent } from './pages/user/detailUser/detailUser.component';
 import { PushNotiComponent } from './pages/user/pushNoti/pushNoti.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ListNotiComponent } from './pages/user/listNoti/listNoti.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/login' },
@@ -28,6 +29,11 @@ export const routes: Routes = [
         component: PushNotiComponent,
         data: { breadcrumb: 'Demo push noti' }
        },
+       { 
+        path: 'listnoti',
+        component: ListNotiComponent,
+        data: { breadcrumb: 'List noti' }
+       }
     ]
   },
 

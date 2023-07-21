@@ -88,7 +88,7 @@ export class ListUserComponent implements OnInit {
     }
   ]
   
-  newNhanSu: any = {};
+  newUser: any = {};
   
   showForm: boolean = false;
   previewImageSrc: string;
@@ -97,66 +97,9 @@ export class ListUserComponent implements OnInit {
   ngOnInit() {
   }
 
-  closeForm() {
+  fnCloseForm() {
     this.showForm = false
   }
 
-  async previewAndUploadImage(event: any) {
-    const file = event.target.files[0];
-    const maxWidth = 150; // Kích thước tối đa của ảnh
-    const maxHeight = 150; // Kích thước tối đa của ảnh
-    try {
-      const resizedFile = await this.resizeImage(file, maxWidth, maxHeight);
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        this.previewImageSrc = e.target.result;
-      };
-
-      reader.readAsDataURL(resizedFile);
-
-      // Gửi resizedFile lên API
-    } catch (error) {
-      console.error('Lỗi khi thay đổi kích thước ảnh:', error);
-    }
-  }
-
-  resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<File> {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-      img.onload = () => {
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height) {
-          if (width > maxWidth) {
-            height *= maxWidth / width;
-            width = maxWidth;
-          }
-        } else {
-          if (height > maxHeight) {
-            width *= maxHeight / height;
-            height = maxHeight;
-          }
-        }
-
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        canvas.toBlob((blob) => {
-          const resizedFile = new File([blob], file.name, {
-            type: file.type,
-            lastModified: Date.now(),
-          });
-          resolve(resizedFile);
-        }, file.type);
-      };
-      img.onerror = (error) => reject(error);
-    });
-  }
+  fnSaveForm() {}
 }

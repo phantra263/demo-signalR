@@ -1,0 +1,129 @@
+<!-- form edit -->
+<nz-drawer [nzVisible]="showForm" [nzTitle]="titleForm" (nzOnClose)="fncloseForm()" [nzMaskClosable]="false"
+  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', padding: '15px 15px 53px 15px' }"
+  [nzFooter]="footerTpl" nzWidth="1000px">
+
+  <!-- content -->
+  <div class="wrap-content">
+    <div class="first-infor">
+      <div class="img-avatar first-block">
+        <img *ngIf="previewImageSrc" [src]="previewImageSrc" alt="Preview" />
+        <input type="file" (change)="previewAndUploadImage($event)" hidden #fileInput />  
+        <button nz-button (click)="fileInput.click()">
+          <span nz-icon nzType="upload"></span>
+          {{ previewImageSrc ? "Thay đổi ảnh": "Tải lên ảnh avatar" }}
+        </button>
+      </div>
+      <div class="right-head first-block">
+        <nz-form-item class="field-infor">
+          <label class="label-detail">Họ tên:</label>
+          <nz-form-control>
+            <input class="input-detail" nz-input placeholder="Họ tên..." nzSize="default"
+              [(ngModel)]="user.maSoKhachHang" />
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item class="field-infor">
+          <label class="label-detail">Ngày sinh:</label>
+          <nz-form-control>
+            <nz-date-picker nzMode="date" [(ngModel)]="user.ngaySinh" nzFormat="dd/MM/yyyy" style="width: 130px"
+              nzInputReadOnly="true" nzAllowClear></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item class="field-infor">
+          <label class="label-detail">Giới tính:</label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="user.gioiTinh" name="gioiTinh" id="gioiTinh" nzPlaceHolder="Chọn" nzShowSearch
+            nzAllowClear>
+              <nz-option nzValue="nam" nzLabel="Nam"></nz-option>
+              <nz-option nzValue="nu" nzLabel="Nữ"></nz-option>
+              <nz-option nzValue="khac" nzLabel="Khác"></nz-option>
+          </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div class="second-infor">
+      <nz-form-item class="field-infor">
+        <label class="label-detail">Quê quán:</label>
+        <nz-form-control>
+          <input class="input-detail" nz-input placeholder="Quê quán..." nzSize="default"
+            [(ngModel)]="user.queQuan" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="field-infor">
+        <label class="label-detail">Chức vụ:</label>
+        <nz-form-control>
+          <input class="input-detail" nz-input placeholder="Nhập mã số KH..." nzSize="default"
+            [(ngModel)]="user.chucVu" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="field-infor">
+        <label class="label-detail">Phòng ban:</label>
+        <nz-form-control>
+          <nz-select [(ngModel)]="user.phongBan" name="gioiTinh" id="gioiTinh" nzPlaceHolder="Chọn" nzShowSearch
+          nzAllowClear>
+            <nz-option nzValue="ict" nzLabel="ICT"></nz-option>
+            <nz-option nzValue="ke toán" nzLabel="Kế toán"></nz-option>
+            <nz-option nzValue="khac" nzLabel="Khác"></nz-option>
+        </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <ng-template #footerTpl>
+    <div>
+      <button nz-button nzType="primary" (click)="fnSaveInfo()">Lưu</button>
+
+      <button nz-button nzType="default" (click)="fncloseForm()" style="margin-left: 8px;">Hủy</button>
+    </div>
+  </ng-template>
+</nz-drawer>
+
+<!-- modal edit image -->
+<nz-modal [(nzVisible)]="VisibleModalEdit" nzTitle="Chỉnh sửa ảnh" [nzClassName]="'modal-edit-image'"  [nzStyle]="{ top: '20px' }"
+    (nzOnCancel)="handleCancelModal()" [nzWidth]="'900px'">
+  <div *nzModalContent class="content-modal">
+      <!-- chỉnh sửa ảnh -->
+  <div class="wrap-crop">
+    <input type="file" (change)="fileChangeEvent($event)" />
+    <br />
+    <br />
+    <button (click)="rotateLeft()">Rotate left</button>
+    <button (click)="rotateRight()">Rotate right</button>
+    <button (click)="flipHorizontal()">Flip horizontal</button>
+    <button (click)="flipVertical()">Flip vertical</button>
+    <div>
+        <image-cropper
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [containWithinAspectRatio]="containWithinAspectRatio"
+            [aspectRatio]="1/1"
+            [resizeToWidth]="256"
+            [cropperMinWidth]="128"
+            [onlyScaleDown]="true"
+            [roundCropper]="false"
+            [canvasRotation]="canvasRotation"
+            [transform]="transform"
+            [alignImage]="'left'"
+            [imageURL] = "'https://picsum.photos/500/500'"
+            [style.display]="showCropper ? null : 'none'"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady($event)"
+            (loadImageFailed)="loadImageFailed()">
+          </image-cropper>
+    </div>
+    <img [src]="croppedImage" [style.border]="croppedImage ? '1px solid black' : 'none'" />
+  </div>
+  </div>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancelModal()">Cancel</button>
+    <button nz-button nzType="primary" (click)="fnSaveEditImage()">Save</button>
+  </div>
+</nz-modal>
