@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
-import { Dimensions, ImageCroppedEvent, ImageTransform } from '../image-cropper/interfaces/index';
-import {base64ToFile} from '../image-cropper/utils/blob.utils';
+import { ImageCroppedEvent, ImageCropperComponent, CropperPosition } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-formUser',
@@ -8,7 +7,8 @@ import {base64ToFile} from '../image-cropper/utils/blob.utils';
   styleUrls: ['./formUser.component.scss']
 })
 export class FormUserComponent implements OnInit {
-  @ViewChild('imageCropper') imageCropper: any;
+  @ViewChild('imageCropper', { static: false })
+  private imageCropperComponent!: ImageCropperComponent;
 
   @Input() user: any;
   @Input() showForm: boolean;
@@ -23,7 +23,7 @@ export class FormUserComponent implements OnInit {
   scale = 1;
   showCropper = false;
   containWithinAspectRatio = true;
-  transform: ImageTransform = {};
+  // transform: ImageTransform = {};
   selectedImage: any;
   VisibleModalEdit: boolean = false;
   previewImageSrc: string;
@@ -32,79 +32,53 @@ export class FormUserComponent implements OnInit {
   imageOriginHeight: number = 0;
   imageCutWidth: number = 0;
   imageCutHeight: number = 0;
+  cropperWidth: number = 0;
+  cropperHeight: number = 0;
+  
   constructor(
   ) { }
 
   ngOnInit() {
     this.previewImageSrc = this.user ? this.user.avatar : '';
+    if (this.user) {
+      this.loadImageFromURL(this.user.avatar)
+    }
   }
 
-  fileChangeEvent(event: any): void {
-    this.imageChangedEvent = event;
-  }
+  // rotateLeft() {
+  //   this.canvasRotation--;
+  //   this.flipAfterRotate();
+  // }
 
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-    console.log(event, base64ToFile(event.base64));
-  }
+  // rotateRight() {
+  //   this.canvasRotation++;
+  //   this.flipAfterRotate();
+  // }
 
-  imageLoaded() {
-    this.showCropper = true;
-    console.log('Image loaded');
-  }
-
-  cropperReady(sourceImageDimensions: Dimensions) {
-    // cắt ảnh ở lần đầu tiên
-    this.startCrop();
-    this.onImageDataChange();
-
-    this.flagCropperReady = true;
-    console.log('Cropper ready', sourceImageDimensions);
-  }
-
-  loadImageFailed() {
-    console.log('Load failed');
-  }
-
-  startCrop() {
-    console.log('123');
-    this.imageCropper.crop();
-  }
-
-  rotateLeft() {
-    this.canvasRotation--;
-    this.flipAfterRotate();
-  }
-
-  rotateRight() {
-    this.canvasRotation++;
-    this.flipAfterRotate();
-  }
-
-  private flipAfterRotate() {
-    const flippedH = this.transform.flipH;
-    const flippedV = this.transform.flipV;
-    this.transform = {
-        ...this.transform,
-        flipH: flippedV,
-        flipV: flippedH
-    };
-  }
+  // private flipAfterRotate() {
+  //   const flippedH = this.transform.flipH;
+  //   const flippedV = this.transform.flipV;
+  //   this.transform = {
+  //       ...this.transform,
+  //       flipH: flippedV,
+  //       flipV: flippedH
+  //   };
+  // }
 
 
-  flipHorizontal() {
-    this.transform = {
-      ...this.transform,
-      flipH: !this.transform.flipH
-    };
-  }
+  // flipHorizontal() {
+  //   this.transform = {
+  //     ...this.transform,
+  //     flipH: !this.transform.flipH
+  //   };
+  // }
 
-  flipVertical() {
-    this.transform = {
-    ...this.transform,
-    flipV: !this.transform.flipV
-    };
-  }
+  // flipVertical() {
+  //   this.transform = {
+  //   ...this.transform,
+  //   flipV: !this.transform.flipV
+  //   };
+  // }
 
   // Function to get the image size (dimensions) when it's loaded
   getImageSize(imageUrl: string) {
@@ -206,4 +180,55 @@ export class FormUserComponent implements OnInit {
   }
 
   fnSaveEditImage() {}
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+  }
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+  imageLoaded(image) {
+    // show cropper
+  }
+  onCropperReady() {
+    // cropper ready
+    // cắt ảnh ở lần đầu tiên
+    this.startCrop();
+    this.onImageDataChange();
+
+    this.flagCropperReady = true;
+    console.log('Cropper ready');
+  }
+  loadImageFailed() {
+    // show message
+  }
+  startCrop() {
+    // Manually trigger the crop action
+    if (this.imageCropperComponent) {
+      this.imageCropperComponent.crop();
+    }
+  }
+  loadImageFromURL(url) {
+    const imageUrl = url; // Replace with your actual image URL
+
+    fetch(imageUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const file = new File([blob], 'image.jpg', { type: blob.type });
+        this.imageChangedEvent = {
+          target: {
+            files: [file],
+          },
+        };
+
+        console.log(this.imageChangedEvent.target.files)
+      })
+      .catch((error) => {
+        console.error('Error fetching the image:', error);
+      });
+  }
+  dataURLtoFile(dataURL: string) {
+    // Implement the conversion from dataURL to File
+    // You can use the code from my previous response that converts dataURL to a File object
+  }
 }

@@ -106,10 +106,10 @@
         <span nz-icon nzType="upload"></span>
         Thay đổi ảnh
       </button>
-      <button nz-button nzType="primary" (click)="rotateLeft()">Xoay trái</button>
+      <!-- <button nz-button nzType="primary" (click)="rotateLeft()">Xoay trái</button>
       <button nz-button nzType="primary" (click)="rotateRight()">Xoay phải</button>
       <button nz-button nzType="primary" (click)="flipHorizontal()">Lật ngang</button>
-      <button nz-button nzType="primary" (click)="flipVertical()">Lật dọc</button>
+      <button nz-button nzType="primary" (click)="flipVertical()">Lật dọc</button> -->
     </div>
     <div class="wrap-crop-image">
       <div class="image-crop">
@@ -117,25 +117,13 @@
         <image-cropper
           [imageChangedEvent]="imageChangedEvent"
           [maintainAspectRatio]="false"
-          [containWithinAspectRatio]="containWithinAspectRatio"
           [aspectRatio]="1/1"
-          [cropperMinWidth]="128"
           [autoCrop]="false"
-          [onlyScaleDown]="false"
-          [roundCropper]="false"
-          [canvasRotation]="canvasRotation"
-          [transform]="transform"
-          [alignImage]="'center'"
-          [imageURL] = "user.avatar"
-          [style.display]="showCropper ? null : 'none'"
           (imageCropped)="imageCropped($event)"
-          (imageLoaded)="imageLoaded()"
-          (cropperReady)="cropperReady($event)"
+          (cropperReady)="onCropperReady()"
           (loadImageFailed)="loadImageFailed()"
-          (onCropMove)="onCropMove($event)"
-          (startMove)="onCropMove($event)"
-          #imageCropper>
-        </image-cropper>
+          #imageCropper
+        ></image-cropper>
       </div>
       <button nz-button nzType="default" style="align-self: center;" (click)="startCrop()" [hidden]="!flagCropperReady"><span nz-icon nzType="scissor" nzTheme="outline" style="color: brown;"></span>Cắt ảnh</button>
       <div class="image-preview">

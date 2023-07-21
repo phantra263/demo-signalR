@@ -13,8 +13,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
-import { ImageCropperModule } from './pages/user/image-cropper/image-cropper.module';
+// import { ImageCropperModule } from './pages/user/image-cropper/image-cropper.module';
 import { SignalRService } from './services/signalr.service';
+import { ImageCropperModule } from 'ngx-image-cropper'
 
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzFormModule } from 'ng-zorro-antd/form';
