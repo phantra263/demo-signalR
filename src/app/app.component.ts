@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { SignalRService } from './services/signalr.service';
 import { AuthService } from './services/auth.service';
 import { NotificationService } from './services/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -47,7 +48,8 @@ export class AppComponent implements OnInit {
     public authService: AuthService,
     private signalRService: SignalRService,
     private ngZone: NgZone,
-    private notifiSrv : NotificationService
+    private notifiSrv : NotificationService,
+    private router: Router
     ) {}
 
   ngOnInit() {
@@ -128,5 +130,10 @@ export class AppComponent implements OnInit {
   showModalAllNoti() {
     this.tooltipVisible = false;
     this.isVisibleModal = true;
+  }
+
+  linkNoti() {
+    this.router.navigate(['listnoti']);
+    this.tooltipVisible = false;
   }
 }

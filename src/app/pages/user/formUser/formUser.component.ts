@@ -23,7 +23,6 @@ export class FormUserComponent implements OnInit {
   scale = 1;
   showCropper = false;
   transform: ImageTransform = {};
-  selectedImage: any;
   VisibleModalEdit: boolean = false;
   previewImageSrc: string;
   flagCropperReady: boolean = false;
@@ -109,6 +108,9 @@ export class FormUserComponent implements OnInit {
 
     // set kích thước gốc của img khi upload hình mới
     this.getImageDimensions(event.target.files[0]);
+
+    // tạo ảnh thumbnail
+    this.previewAndUploadImage(event);
   }
 
   getImageDimensions(file: File) {
@@ -157,7 +159,13 @@ export class FormUserComponent implements OnInit {
   }
 
   startCrop() {
-    this.imageCropper.crop();
+    this.isUploadImg = true;
+
+    setTimeout(() => {
+     this.imageCropper.crop();
+     this.isUploadImg = false
+    }, 10)
+
   }
 
   rotateLeft() {
@@ -187,7 +195,6 @@ export class FormUserComponent implements OnInit {
     img.onload = () => {
       this.imageOriginWidth = this.imageCutWidth = img.naturalWidth;
       this.imageOriginHeight = this.imageCutHeight = img.naturalHeight;
-      // this.aspectRatio = this.imageOriginWidth / this.imageOriginHeight;
     };
   }
 

@@ -38,7 +38,7 @@
         <nz-form-item class="field-infor">
           <label class="label-detail">Ngày sinh:</label>
           <nz-form-control>
-            <nz-date-picker nzMode="date" [(ngModel)]="user.ngaySinh" nzAllowClear></nz-date-picker>
+            <nz-date-picker [(ngModel)]="user.ngaySinh" nzAllowClear></nz-date-picker>
           </nz-form-control>
         </nz-form-item>
   
@@ -67,7 +67,7 @@
       <nz-form-item class="field-infor">
         <label class="label-detail">Chức vụ:</label>
         <nz-form-control>
-          <input class="input-detail" nz-input placeholder="Nhập mã số KH..." nzSize="default"
+          <input class="input-detail" nz-input placeholder="Chức vụ..." nzSize="default"
             [(ngModel)]="user.chucVu" />
         </nz-form-control>
       </nz-form-item>
@@ -167,8 +167,8 @@
                   [hidden]="!flagCropperReady" [style.border]="croppedImage ? '1px solid #eee' : 'none'"/>
           </div>
         </div>
-        </nz-spin>
-      </div>
+      </nz-spin>
+    </div>
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancelModal()">Hủy</button>
     <button nz-button nzType="primary" (click)="fnSaveEditImage()">Lưu</button>

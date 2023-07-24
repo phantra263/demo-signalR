@@ -1,0 +1,28 @@
+::ng-deep .ant-tabs > .ant-tabs-nav {
+  flex-direction: row-reverse;
+  .ant-tabs-extra-content {
+    width: 40px;
+    padding: 0 10px;
+    margin-top: 2px;
+  }
+  .ant-tabs-tab-btn {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  input {
+    line-height: 1;
+  }
+}
+.w-100 {
+  width: 100%;
+}
+.content-noti {
+  cursor: pointer;
+  p {
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+  }
+}

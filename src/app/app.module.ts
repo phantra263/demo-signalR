@@ -70,6 +70,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { ListNotiComponent } from './pages/user/listNoti/listNoti.component';
 import { FormUserComponent } from './pages/user/formUser/formUser.component';
+import { DetailNotiComponent } from './pages/user/detailNoti/detailNoti.component';
 
 registerLocaleData(en);
 
@@ -88,6 +89,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ListNotiComponent,
     DetailUserComponent,
     ListUserComponent,
+    DetailNotiComponent,
     PushNotiComponent,
     LoginComponent,
     HasRoleDirective

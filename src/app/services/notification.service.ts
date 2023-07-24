@@ -9,7 +9,7 @@ import { httpOptions } from '../common/httpOptions';
 })
 export class NotificationService {
   private baseUrl = environment.apiUrl;
-  private apiController = '/api/v1/chinhanh';
+  private apiController = '/api/v1/Notification';
 
   constructor(private http: HttpClient) { }
 

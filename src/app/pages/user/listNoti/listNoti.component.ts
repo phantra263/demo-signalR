@@ -4,7 +4,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 @Component({
   selector: 'app-listNoti',
   templateUrl: './listNoti.component.html',
-  styleUrls: ['./listNoti.component.css']
+  styleUrls: ['./listNoti.component.scss']
 })
 export class ListNotiComponent implements OnInit {
 
@@ -14,6 +14,9 @@ export class ListNotiComponent implements OnInit {
     Keyword: ''
   }
   listNoti: any = [];
+  listNotiNotSeen: any = [];
+  totalItems: number = 0;
+  dataSelectAll: boolean = false;
 
   constructor(
     private notifiSrv : NotificationService
@@ -24,9 +27,11 @@ export class ListNotiComponent implements OnInit {
   }
 
   getListNoti() {
-    this.notifiSrv.getListNoti(this.filterParams).toPromise().then(
+    this.notifiSrv.getListNoti(this.filterParams).subscribe(
       (response: any) => {
-        this.listNoti = response.data[0].items
+        this.listNoti = response.data[0].items;
+        this.totalItems = this.listNoti.length;
+        this.listNotiNotSeen = this.listNoti.filter(item => !item.isRead);
       }
     );
  }

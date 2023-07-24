@@ -1,5 +1,44 @@
 <nz-card class="listnoti">
   <div class="wrap-content">
-    
+    <nz-tabset [nzTabBarExtraContent]="extraTemplate">
+      <ng-template #extraTemplate>
+        <input type="checkbox" [(ngModel)]="dataSelectAll" />
+      </ng-template>
+
+      <nz-tab nzTitle="Tất cả">
+        <nz-table #tblList [nzData]="listNoti" nzFrontPagination nzShowSizeChanger class="all-noti"
+          [nzTotal]="totalItems" [nzPageSize]="filterParams.PageSize" [nzPageIndex]="filterParams.PageNumber"
+          [nzScroll]="{x: 'auto' }">
+          <tbody>
+            <tr *ngFor="let data of tblList.data">
+              <td nzWidth="40px">
+                <input type="checkbox" [(ngModel)]="data.select" />
+              </td>
+              <td class="content-noti w-100" [ngStyle]="{'opacity': data.isRead ? '0.5' : ''}" [routerLink]="['/listnoti/chitiet', data.id]">
+                <p class="line-clamp"><b>{{ data.lastName }} {{ data.firstName }}</b> {{ data.content }}</p>
+              </td>
+              <td style="text-align: right;" nzWidth="130px">{{data.createAt | date: 'dd/MM/yyyy'}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="Chưa xem">
+        <nz-table #tblList1 [nzData]="listNotiNotSeen" nzFrontPagination nzShowSizeChanger class="not-seen-noti"
+        [nzTotal]="totalItems" [nzPageSize]="filterParams.PageSize" [nzPageIndex]="filterParams.PageNumber"
+        [nzScroll]="{x: 'auto'}">
+        <tbody>
+          <tr *ngFor="let data of tblList1.data">
+            <td nzWidth="40px">
+              <input type="checkbox" [(ngModel)]="data.select" />
+            </td>
+            <td class="content-noti w-100" [ngStyle]="{'opacity': data.isRead ? '0.5' : ''}" [routerLink]="['/listnoti/chitiet', data.id]">
+              <p class="line-clamp"><b>{{ data.lastName }} {{ data.firstName }}</b> {{ data.content }}</p>
+            </td>
+            <td style="text-align: right;" nzWidth="130px">{{data.createAt | date: 'dd/MM/yyyy'}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+      </nz-tab>
+    </nz-tabset>
   </div>
 </nz-card>

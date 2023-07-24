@@ -7,6 +7,7 @@ import { DetailUserComponent } from './pages/user/detailUser/detailUser.componen
 import { PushNotiComponent } from './pages/user/pushNoti/pushNoti.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ListNotiComponent } from './pages/user/listNoti/listNoti.component';
+import { DetailNotiComponent } from './pages/user/detailNoti/detailNoti.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/login' },
@@ -21,7 +22,7 @@ export const routes: Routes = [
         data: { breadcrumb: 'Danh sách nhân viên' },
         children: [
           { path: '', component: ListUserComponent, data: { breadcrumb: '' } },
-          { path: 'chitiet/:id', component: DetailUserComponent, data: { breadcrumb: 'Chi tiết đơn tuyển' } }
+          { path: 'chitiet/:id', component: DetailUserComponent, data: { breadcrumb: 'Chi tiết nhân viên' } }
         ]
        },
        { 
@@ -31,8 +32,11 @@ export const routes: Routes = [
        },
        { 
         path: 'listnoti',
-        component: ListNotiComponent,
-        data: { breadcrumb: 'List noti' }
+        data: { breadcrumb: 'List noti' },
+        children: [
+          { path: '', component: ListNotiComponent, data: { breadcrumb: '' } },
+          { path: 'chitiet/:id', component: DetailNotiComponent, data: { breadcrumb: 'Chi tiết thông báo' } }
+        ]
        }
     ]
   },
