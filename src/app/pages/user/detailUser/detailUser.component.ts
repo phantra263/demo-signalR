@@ -6,7 +6,7 @@ import {base64ToFile} from '../image-cropper/utils/blob.utils';
 @Component({
   selector: 'app-detailUser',
   templateUrl: './detailUser.component.html',
-  styleUrls: ['./detailUser.component.css']
+  styleUrls: ['./detailUser.component.scss']
 })
 export class DetailUserComponent implements OnInit {
   imageChangedEvent: any = '';
@@ -19,16 +19,20 @@ export class DetailUserComponent implements OnInit {
   transform: ImageTransform = {};
 
   itemDetailModel:any = {
-    avatarThumb: 'https://picsum.photos/200/300',
-    avatar: 'https://picsum.photos/200/300',
+    avatarThumb: 'https://picsum.photos/250/220',
+    avatar: 'https://picsum.photos/250/220',
     maNhanVien: 'HS22323',
     hoTen: "Phan công trà",
     ngaySinh: "26-03-1998",
     gioiTinh: "Nam",
     queQuan: "Quảng nam",
+    dienThoai: '09143598734',
     tonGiao: "Không",
     chucVu: "Cộng tác viên",
-    phongBan: "ICT"
+    phongBan: "ICT",
+    congTy: 'ALESU',
+    tinhTrang: 'Chính thức',
+    groupMail: 'trapc@esuhai.com'
   }
 
   showForm: boolean = false;
@@ -55,7 +59,6 @@ export class DetailUserComponent implements OnInit {
   }
 
   fnSaveEditImage() {
-
   }
 
   openEditImage() {

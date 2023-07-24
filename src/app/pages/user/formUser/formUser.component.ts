@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, NgZone } from '@angular/core';
 import { Dimensions, ImageCroppedEvent, ImageTransform } from '../image-cropper/interfaces/index';
 import {base64ToFile} from '../image-cropper/utils/blob.utils';
 
@@ -22,7 +22,6 @@ export class FormUserComponent implements OnInit {
   rotation = 0;
   scale = 1;
   showCropper = false;
-  containWithinAspectRatio = true;
   transform: ImageTransform = {};
   selectedImage: any;
   VisibleModalEdit: boolean = false;
@@ -32,124 +31,23 @@ export class FormUserComponent implements OnInit {
   imageOriginHeight: number = 0;
   imageCutWidth: number = 0;
   imageCutHeight: number = 0;
+  isUploadImg: boolean = true;
+  isUploadImgCrop: boolean = false;
+  aspectRatio: number = 1/1;
+  maxWidthResize: number = 150;
+  maxHeightResize: number = 150;
   constructor(
+    private ngZone: NgZone,
   ) { }
 
   ngOnInit() {
     this.previewImageSrc = this.user ? this.user.avatar : '';
   }
 
-  fileChangeEvent(event: any): void {
-    this.imageChangedEvent = event;
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-    console.log(event, base64ToFile(event.base64));
-  }
-
-  imageLoaded() {
-    this.showCropper = true;
-    console.log('Image loaded');
-  }
-
-  cropperReady(sourceImageDimensions: Dimensions) {
-    // cắt ảnh ở lần đầu tiên
-    this.startCrop();
-    this.onImageDataChange();
-
-    this.flagCropperReady = true;
-    console.log('Cropper ready', sourceImageDimensions);
-  }
-
-  loadImageFailed() {
-    console.log('Load failed');
-  }
-
-  startCrop() {
-    console.log('123');
-    this.imageCropper.crop();
-  }
-
-  rotateLeft() {
-    this.canvasRotation--;
-    this.flipAfterRotate();
-  }
-
-  rotateRight() {
-    this.canvasRotation++;
-    this.flipAfterRotate();
-  }
-
-  private flipAfterRotate() {
-    const flippedH = this.transform.flipH;
-    const flippedV = this.transform.flipV;
-    this.transform = {
-        ...this.transform,
-        flipH: flippedV,
-        flipV: flippedH
-    };
-  }
-
-
-  flipHorizontal() {
-    this.transform = {
-      ...this.transform,
-      flipH: !this.transform.flipH
-    };
-  }
-
-  flipVertical() {
-    this.transform = {
-    ...this.transform,
-    flipV: !this.transform.flipV
-    };
-  }
-
-  // Function to get the image size (dimensions) when it's loaded
-  getImageSize(imageUrl: string) {
-    const img = new Image();
-    img.src = imageUrl;
-    img.onload = () => {
-      this.imageOriginWidth = img.naturalWidth;
-      this.imageOriginHeight = img.naturalHeight;
-    };
-  }
-
-  onImageDataChange() {
-    if (this.user.avatar) {
-      this.getImageSize(this.user.avatar);
-    }
-  }
-
-  onImageLoad(event: Event) {
-    // This function will be called when the image is loaded or changed.
-    // Access the image element to get its dimensions.
-    const imageElement = event.target as HTMLImageElement;
-    this.imageCutWidth = imageElement.naturalWidth;
-    this.imageCutHeight = imageElement.naturalHeight;
-  }
-
-  onCropMove(event) {
-    console.log(event)
-  }
-
-  fncloseForm() {
-    this.closeDraw$.emit();
-  }
-
-  fnSaveInfo() {
-    this.saveDraw$.emit();
-  }
-
-  handleCancelModal() {
-    this.VisibleModalEdit = false;
-  }
-
   async previewAndUploadImage(event: any) {
     const file = event.target.files[0];
-    const maxWidth = 150; // Kích thước tối đa của ảnh
-    const maxHeight = 150; // Kích thước tối đa của ảnh
+    const maxWidth = this.maxWidthResize; // Kích thước tối đa của ảnh
+    const maxHeight = this.maxHeightResize; // Kích thước tối đa của ảnh
     try {
       const resizedFile = await this.resizeImage(file, maxWidth, maxHeight);
       const reader = new FileReader();
@@ -204,6 +102,132 @@ export class FormUserComponent implements OnInit {
       img.onerror = (error) => reject(error);
     });
   }
+
+  fileChangeEvent(event: any): void {
+    this.isUploadImgCrop = true;
+    this.imageChangedEvent = event;
+
+    // set kích thước gốc của img khi upload hình mới
+    this.getImageDimensions(event.target.files[0]);
+  }
+
+  getImageDimensions(file: File) {
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      const img = new Image();
+      img.src = e.target.result;
+
+      img.onload = () => {
+        this.imageOriginWidth = this.imageCutWidth = img.width;
+        this.imageOriginHeight = this.imageCutHeight = img.height;
+        // this.aspectRatio = this.imageOriginWidth / this.imageOriginHeight;
+
+      };
+    };
+    reader.readAsDataURL(file);
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+
+    // get kích thước khi cắt
+    this.imageCutWidth = event.width;
+    this.imageCutHeight = event.height;
+    console.log(event, base64ToFile(event.base64));
+  }
+
+  imageLoaded() {
+    this.showCropper = true;
+    console.log('Image loaded');
+  }
+
+  cropperReady(sourceImageDimensions: Dimensions) {
+    // cắt ảnh ở lần đầu tiên
+    this.startCrop();
+    this.onImageDataChange();
+    this.flagCropperReady = true;
+    this.isUploadImg = false;
+    this.isUploadImgCrop = false;
+    console.log('Cropper ready', sourceImageDimensions);
+  }
+
+  loadImageFailed() {
+    console.log('Load failed');
+  }
+
+  startCrop() {
+    this.imageCropper.crop();
+  }
+
+  rotateLeft() {
+    this.canvasRotation--;
+    this.flipAfterRotate();
+  }
+
+  rotateRight() {
+    this.canvasRotation++;
+    this.flipAfterRotate();
+  }
+
+  private flipAfterRotate() {
+    const flippedH = this.transform.flipH;
+    const flippedV = this.transform.flipV;
+    this.transform = {
+        ...this.transform,
+        flipH: flippedV,
+        flipV: flippedH
+    };
+  }
+
+  // Function to get the image size (dimensions) when it's loaded
+  getImageSize(imageUrl: string) {
+    const img = new Image();
+    img.src = imageUrl;
+    img.onload = () => {
+      this.imageOriginWidth = this.imageCutWidth = img.naturalWidth;
+      this.imageOriginHeight = this.imageCutHeight = img.naturalHeight;
+      // this.aspectRatio = this.imageOriginWidth / this.imageOriginHeight;
+    };
+  }
+
+  onImageLoad(event: Event) {
+    // This function will be called when the image is loaded or changed.
+    // Access the image element to get its dimensions.
+    const imageElement = event.target as HTMLImageElement;
+    this.imageCutWidth = imageElement.naturalWidth;
+    this.imageCutHeight = imageElement.naturalHeight;
+  }
+
+  onImageDataChange() {
+    if (this.user.avatar && !this.imageChangedEvent) {
+      this.getImageSize(this.user.avatar);
+    }
+  }
+
+  fncloseForm() {
+    this.closeDraw$.emit();
+  }
+
+  fnSaveInfo() {
+    this.saveDraw$.emit();
+  }
+
+  handleCancelModal() {
+    this.VisibleModalEdit = false;
+    this.resetImage();
+  }
+
+  resetImage() {
+    this.scale = 1;
+    this.rotation = 0;
+    this.canvasRotation = 0;
+    this.transform = {};
+    this.imageChangedEvent = '';
+    this.isUploadImg = true;
+    this.isUploadImgCrop = false;
+    this.flagCropperReady = false;
+}
 
   fnSaveEditImage() {}
 }

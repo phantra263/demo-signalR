@@ -53,6 +53,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { BreadcrumbComponent } from './pages/breadcrumb/breadcrumb.component';
 import { ChartsModule, ThemeService } from 'ng2-charts';
@@ -143,6 +144,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     NzStatisticModule,
     NzNoAnimationModule,
     NzToolTipModule,
+    NzSpinModule,
 
     HttpClientModule,
     TranslateModule.forRoot({

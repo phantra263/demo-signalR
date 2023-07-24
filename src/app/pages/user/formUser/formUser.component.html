@@ -38,7 +38,7 @@
         <nz-form-item class="field-infor">
           <label class="label-detail">Ngày sinh:</label>
           <nz-form-control>
-            <nz-date-picker nzMode="date" [(ngModel)]="user.ngaySinh" style="width: 130px" nzAllowClear></nz-date-picker>
+            <nz-date-picker nzMode="date" [(ngModel)]="user.ngaySinh" nzAllowClear></nz-date-picker>
           </nz-form-control>
         </nz-form-item>
   
@@ -64,7 +64,6 @@
             [(ngModel)]="user.queQuan" />
         </nz-form-control>
       </nz-form-item>
-
       <nz-form-item class="field-infor">
         <label class="label-detail">Chức vụ:</label>
         <nz-form-control>
@@ -72,7 +71,6 @@
             [(ngModel)]="user.chucVu" />
         </nz-form-control>
       </nz-form-item>
-
       <nz-form-item class="field-infor">
         <label class="label-detail">Phòng ban:</label>
         <nz-form-control>
@@ -82,6 +80,31 @@
             <nz-option nzValue="Kế toán" nzLabel="Kế toán"></nz-option>
             <nz-option nzValue="Khác" nzLabel="Khác"></nz-option>
         </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="field-infor">
+        <label class="label-detail">Công ty:</label>
+        <nz-form-control>
+          <input class="input-detail" nz-input placeholder="Công Ty..." nzSize="default"
+            [(ngModel)]="user.congTy" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="field-infor">
+        <label class="label-detail">Tình trạng:</label>
+        <nz-form-control>
+          <nz-select [(ngModel)]="user.tinhTrang" name="tinhTrang" id="tinhTrang" nzPlaceHolder="Chọn" nzShowSearch
+          nzAllowClear>
+            <nz-option nzValue="Chính thức" nzLabel="Chính thức"></nz-option>
+            <nz-option nzValue="TTS" nzLabel="TTS"></nz-option>
+            <nz-option nzValue="Khác" nzLabel="Khác"></nz-option>
+        </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="field-infor">
+        <label class="label-detail">Group mail:</label>
+        <nz-form-control>
+          <input class="input-detail" nz-input placeholder="Mail..." nzSize="default"
+            [(ngModel)]="user.groupMail" />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -99,53 +122,53 @@
 <!-- modal edit image -->
 <nz-modal [(nzVisible)]="VisibleModalEdit" nzTitle="Chỉnh sửa ảnh" [nzClassName]="'modal-edit-image'"  [nzStyle]="{ top: '20px' }"
     (nzOnCancel)="handleCancelModal()" [nzWidth]="'900px'">
-  <div *nzModalContent class="content-modal">
-    <div class="btn-group">     
-      <input type="file" (change)="fileChangeEvent($event)" hidden #fileInput />
-      <button nz-button (click)="fileInput.click()">
-        <span nz-icon nzType="upload"></span>
-        Thay đổi ảnh
-      </button>
-      <button nz-button nzType="primary" (click)="rotateLeft()">Xoay trái</button>
-      <button nz-button nzType="primary" (click)="rotateRight()">Xoay phải</button>
-      <button nz-button nzType="primary" (click)="flipHorizontal()">Lật ngang</button>
-      <button nz-button nzType="primary" (click)="flipVertical()">Lật dọc</button>
-    </div>
-    <div class="wrap-crop-image">
-      <div class="image-crop">
-        <p class="t-center label-img" [hidden]="!flagCropperReady">Ảnh gốc({{imageOriginWidth}}x{{imageOriginHeight}})</p>
-        <image-cropper
-          [imageChangedEvent]="imageChangedEvent"
-          [maintainAspectRatio]="false"
-          [containWithinAspectRatio]="containWithinAspectRatio"
-          [aspectRatio]="1/1"
-          [cropperMinWidth]="128"
-          [autoCrop]="false"
-          [onlyScaleDown]="false"
-          [roundCropper]="false"
-          [canvasRotation]="canvasRotation"
-          [transform]="transform"
-          [alignImage]="'center'"
-          [imageURL] = "user.avatar"
-          [style.display]="showCropper ? null : 'none'"
-          (imageCropped)="imageCropped($event)"
-          (imageLoaded)="imageLoaded()"
-          (cropperReady)="cropperReady($event)"
-          (loadImageFailed)="loadImageFailed()"
-          (onCropMove)="onCropMove($event)"
-          (startMove)="onCropMove($event)"
-          #imageCropper>
-        </image-cropper>
+    <div *nzModalContent class="content-modal">
+      <nz-spin [nzSpinning]="isUploadImg" nzTip="Ảnh dung lớn có thể chờ lâu..." style="min-height: calc(100vh - 150px);">
+        <div class="btn-group">     
+          <input type="file" (change)="fileChangeEvent($event)" hidden #fileInput />
+          <button nz-button (click)="fileInput.click()">
+            <span nz-icon nzType="upload"></span>
+            Thay đổi ảnh
+          </button>
+          <button nz-button nzType="primary" (click)="rotateLeft()">Xoay trái</button>
+          <button nz-button nzType="primary" (click)="rotateRight()">Xoay phải</button>
+        </div>
+        <div class="wrap-crop-image">
+          <nz-spin [nzSpinning]="isUploadImgCrop" nzTip="Ảnh dung lớn có thể chờ lâu...">
+            <div class="image-crop">
+              <p class="t-center label-img" [hidden]="!flagCropperReady">Ảnh gốc({{imageOriginWidth}}x{{imageOriginHeight}})</p>
+              <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="false"
+                [containWithinAspectRatio]="true"
+                [aspectRatio]="1/1"
+                [autoCrop]="false"
+                [onlyScaleDown]="false"
+                [roundCropper]="false"
+                [canvasRotation]="canvasRotation"
+                [transform]="transform"
+                [alignImage]="'center'"
+                [imageURL] = "user.avatar"
+                [style.display]="showCropper ? null : 'none'"
+                (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded()"
+                (cropperReady)="cropperReady($event)"
+                (loadImageFailed)="loadImageFailed()"
+                #imageCropper>
+              </image-cropper>
+            </div>
+          </nz-spin>
+    
+          <button nz-button nzType="default" style="align-self: center;" (click)="startCrop()" [hidden]="!flagCropperReady"><span nz-icon nzType="scissor" nzTheme="outline" style="color: brown;"></span>Cắt ảnh</button>
+          <div class="image-preview">
+            <p class="t-center label-img" [hidden]="!flagCropperReady">Ảnh cắt({{imageCutWidth}}x{{imageCutHeight}})</p>
+            <img [src]="croppedImage"
+                (load)="onImageLoad($event)"
+                  [hidden]="!flagCropperReady" [style.border]="croppedImage ? '1px solid #eee' : 'none'"/>
+          </div>
+        </div>
+        </nz-spin>
       </div>
-      <button nz-button nzType="default" style="align-self: center;" (click)="startCrop()" [hidden]="!flagCropperReady"><span nz-icon nzType="scissor" nzTheme="outline" style="color: brown;"></span>Cắt ảnh</button>
-      <div class="image-preview">
-        <p class="t-center label-img" [hidden]="!flagCropperReady">Ảnh cắt({{imageCutWidth}}x{{imageCutHeight}})</p>
-        <img [src]="croppedImage" 
-             (load)="onImageLoad($event)"
-             [hidden]="!flagCropperReady" [style.border]="croppedImage ? '1px solid #eee' : 'none'"/>
-      </div>
-    </div>
-  </div>
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancelModal()">Hủy</button>
     <button nz-button nzType="primary" (click)="fnSaveEditImage()">Lưu</button>
