@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { AppGuard } from './guards/app.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { Routes, RouterModule } from '@angular/router';
-import { ListUserComponent } from './pages/user/listUser/listUser.component';
-import { DetailUserComponent } from './pages/user/detailUser/detailUser.component';
+import { ListHinhAnhComponent } from './pages/user/listHinhAnh/listHinhAnh.component';
+import { DetailHinhAnhComponent } from './pages/user/detailHinhAnh/detailHinhAnh.component';
 import { PushNotiComponent } from './pages/user/pushNoti/pushNoti.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ListNotiComponent } from './pages/user/listNoti/listNoti.component';
 import { DetailNotiComponent } from './pages/user/detailNoti/detailNoti.component';
+import { ChatComponent } from './pages/user/chat/chat.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/login' },
@@ -18,11 +19,11 @@ export const routes: Routes = [
     canActivate: [AppGuard],
     children: [
        { 
-        path: 'nhanvien',
-        data: { breadcrumb: 'Danh sách nhân viên' },
+        path: 'hinhanh',
+        data: { breadcrumb: 'Danh sách hình ảnh' },
         children: [
-          { path: '', component: ListUserComponent, data: { breadcrumb: '' } },
-          { path: 'chitiet/:id', component: DetailUserComponent, data: { breadcrumb: 'Chi tiết nhân viên' } }
+          { path: '', component: ListHinhAnhComponent, data: { breadcrumb: '' } },
+          { path: 'chitiet/:id', component: DetailHinhAnhComponent, data: { breadcrumb: 'Chi tiết hình ảnh' } }
         ]
        },
        { 
@@ -35,7 +36,15 @@ export const routes: Routes = [
         data: { breadcrumb: 'List noti' },
         children: [
           { path: '', component: ListNotiComponent, data: { breadcrumb: '' } },
-          { path: 'chitiet/:id', component: DetailNotiComponent, data: { breadcrumb: 'Chi tiết thông báo' } }
+          // { path: 'chitiet/:id', component: DetailNotiComponent, data: { breadcrumb: 'Chi tiết thông báo' }}
+        ]
+       },
+       { 
+        path: 'chat',
+        data: { breadcrumb: 'List chat' },
+        children: [
+          { path: '', component: ChatComponent, data: { breadcrumb: '' } },
+          { path: ':id', component: ChatComponent, data: { breadcrumb: 'detail' } },
         ]
        }
     ]

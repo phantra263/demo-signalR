@@ -1,0 +1,133 @@
+<nz-card class="chat" style="min-height: calc(100vh - 120px);">
+  <div class="wrap-chat">
+    <div class="list-chat">
+      <div class="search">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input placeholder="Tìm kiếm" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search"></span>
+        </ng-template>
+      </div>
+
+      <nz-tabset>
+        <nz-tab nzTitle="Người dùng">
+          <ul class="list-user">
+            <li *ngFor="let i of [1,2,3,4]" [routerLink]="['/chat', i]" routerLinkActive="active">
+              <img src="https://picsum.photos/200/300" alt="">
+    
+              <div class="infor">
+                <h5>trà z</h5>
+                <div class="last-mess">
+                  <p>If you have correctly implemented the changes above, clicking on a notification in the list should display its details in the same component</p>
+                  <time>1 giờ trước</time>
+                </div>
+              </div>
+
+              <span class="mark"></span>
+            </li>
+          </ul>
+        </nz-tab>
+        <nz-tab nzTitle="Nhóm">
+          <ul class="list-user">
+            <li *ngFor="let i of [1,2,3,4]">
+              <img src="https://picsum.photos/200/300" alt="">
+    
+              <div class="infor">
+                <h5>Nhóm 1</h5>
+                <div class="last-mess">
+                  <p>If you have correctly implemented the changes above, clicking on a notification in the list should display its details in the same component</p>
+                  <time>1 giờ trước</time>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+
+    <div class="content-chat"[ngStyle]="{'background': !hasConversation ? '#f0f2f5' : ''}">
+      <div class="detail-chat">
+        <h1 *ngIf="!hasConversation" class="mess-empty">Hãy chọn một đoạn chat hoặc bắt đầu cuộc trò chuyện mới</h1>
+
+        <div class="chat-history" *ngIf="hasConversation">
+          <ul>
+            <li>
+              <div class="message-data just-right">
+                <span class="message-data-name">Trà Z</span>
+                <img src="https://picsum.photos/50/50" alt="">
+              </div>
+              <div class="wrap-message my-message t-right">
+                <p class="message">
+                  How is the project coming along?
+                </p>
+                <span class="message-data-time">10:10 AM, Today</span>
+              </div>
+              <div class="wrap-message my-message t-right">
+                <p class="message">
+                  Hi Vincent, how are you? How is the project coming along?
+                </p>
+                <span class="message-data-time">10:10 AM, Today</span>
+              </div>
+            </li>
+            <li>
+              <div class="message-data">
+                <span class="message-data-name">Vinh</span>
+                <img src="https://picsum.photos/50/50" alt="">
+              </div>
+              <div class="wrap-message other-message">
+                <p class="message">
+                  Hi Vincent, how are you? How is the project coming along?
+                </p>
+                <span class="message-data-time">10:10 AM, Today</span>
+              </div>
+            </li>
+            <li>
+              <div class="message-data just-right">
+                <span class="message-data-name">Trà Z</span>
+                <img src="https://picsum.photos/50/50" alt="">
+              </div>
+              <div class="wrap-message my-message t-right">
+                <p class="message">
+                  Hi Vincent, how are you? How is the project coming along?
+                </p>
+                <span class="message-data-time">10:10 AM, Today</span>
+              </div>
+            </li>
+            <li>
+              <div class="message-data">
+                <span class="message-data-name">Vinh</span>
+                <img src="https://picsum.photos/50/50" alt="">
+              </div>
+              <div class="wrap-message other-message">
+                <p class="message">
+                  Hi Vincent, how are you? How is the project coming along?
+                </p>
+                <span class="message-data-time">10:10 AM, Today</span>
+              </div>
+            </li>
+            <li>
+              <div class="message-data just-right">
+                <span class="message-data-name">Trà Z</span>
+                <img src="https://picsum.photos/50/50" alt="">
+              </div>
+              <div class="wrap-message my-message t-right">
+                <p class="message">
+                  Hi Vincent, how are you? How is the project coming along?
+                </p>
+                <span class="message-data-time">10:10 AM, Today</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="input-chat" *ngIf="hasConversation">
+        <textarea [nzAutosize]="{ minRows: 1, maxRows: 3 }" nz-input [(ngModel)]="inputChat"></textarea>
+        <button nz-button nzType="primary" [nzSize]="'small'" nzShape="round">
+          <span nz-icon nzType="send"></span>
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+</nz-card>

@@ -1,0 +1,87 @@
+.t-center {
+  text-align: center;
+}
+.list {
+  th {
+    padding: 5px 10px; 
+    text-align: center 
+  }
+  td {
+    padding: 10px 5px
+  }
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto;
+    img {
+      width: 100%;
+      height: inherit;
+      object-fit: cover;
+    }
+  }
+  ::ng-deep .tooltip-avatar {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: inherit;
+      object-fit: cover;
+    }
+    p {
+      font-size: 25px;
+      font-weight: bold;
+      color: red;
+    }
+  }
+}
+
+.wrap-content {
+  .img-avatar {
+    text-align: center;
+    border: 1px dashed #eee;
+    border-radius: 10px;
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+    padding: 10px;
+    .wrap-preview {
+      margin-top: 10px;
+      max-height: 300px;
+      overflow: auto;
+      padding: 10px;
+      width: 100%;
+    }
+    .img-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      width: 100%;
+      img {
+        margin-right: 10px;
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+      }
+      p {
+        text-align: left;
+        margin: 0 10px 0 0;
+        max-width: 300px;
+        width: 100%;
+      }
+    }
+  }
+}
+
+::ng-deep .modal-upload-image {
+  .ant-modal-body {
+    max-height: calc(100vh - 150px);
+    min-height: calc(100vh - 150px);
+    overflow: auto;
+  }
+}

@@ -1,0 +1,56 @@
+.col-avatar {
+  display: flex;
+  align-items: flex-start;
+  .wrap-avatar {
+    width: 250px;
+    height: 220px;
+    overflow: hidden;
+    margin-right: 30px;
+    flex-shrink: 0;
+    align-self: center;
+    border: 1px solid #eee;
+    img {
+      width: 100%;
+      height: inherit;
+      object-fit: contain;
+    }
+  }
+  ::ng-deep .ant-descriptions-item-label {
+    font-weight: bold;
+    font-style: italic;
+  }
+}
+
+::ng-deep .modal-edit-image {
+  .ant-modal-body {
+    max-height: calc(100vh - 150px);
+    min-height: calc(100vh - 150px);
+    overflow: auto;
+  }
+  .content-modal {
+    .btn-group {
+      margin-bottom: 20px;
+      button {
+        margin-right: 10px;
+      }
+    }
+    .wrap-crop-image {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      .image-crop, 
+      .image-preview {
+        img {
+          width: 300px;
+          height: 300px;
+          object-fit: contain;
+        }
+      }
+      .label-img {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

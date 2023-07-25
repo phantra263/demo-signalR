@@ -26,3 +26,15 @@
     overflow: hidden;
   }
 }
+.wrap-noti {
+  display: flex;
+  align-items: flex-start;
+  .all-noti {
+    width: 100%;
+    &.show-detail {
+      width: 300px;
+      border-right: 1px solid #eee;
+      padding-right: 10px;
+    }
+  }
+}

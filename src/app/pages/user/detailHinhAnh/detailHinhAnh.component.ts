@@ -1,20 +1,16 @@
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild, NgZone } from '@angular/core';
 import { Dimensions, ImageCroppedEvent, ImageTransform } from '../image-cropper/interfaces/index';
 import {base64ToFile} from '../image-cropper/utils/blob.utils';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
 
 @Component({
-  selector: 'app-formUser',
-  templateUrl: './formUser.component.html',
-  styleUrls: ['./formUser.component.scss']
+  selector: 'app-detailHinhAnh',
+  templateUrl: './detailHinhAnh.component.html',
+  styleUrls: ['./detailHinhAnh.component.scss']
 })
-export class FormUserComponent implements OnInit {
+export class DetailHinhAnhComponent implements OnInit {
   @ViewChild('imageCropper') imageCropper: any;
-
-  @Input() user: any;
-  @Input() showForm: boolean;
-  @Input() titleForm: string;
-  @Output() closeDraw$:any = new EventEmitter();
-  @Output() saveDraw$:any = new EventEmitter();
 
   imageChangedEvent: any = '';
   croppedImage: any = '';
@@ -23,7 +19,6 @@ export class FormUserComponent implements OnInit {
   scale = 1;
   showCropper = false;
   transform: ImageTransform = {};
-  VisibleModalEdit: boolean = false;
   previewImageSrc: string;
   flagCropperReady: boolean = false;
   imageOriginWidth: number = 0;
@@ -35,71 +30,28 @@ export class FormUserComponent implements OnInit {
   aspectRatio: number = 1/1;
   maxWidthResize: number = 150;
   maxHeightResize: number = 150;
-  constructor(
-    private ngZone: NgZone,
-  ) { }
+  imagesPreview: any = [];
+
+  itemDetailModel:any = {
+    avatarThumb: 'https://picsum.photos/200/300',
+    avatar: 'https://picsum.photos/200/300',
+    maNhanVien: 'HS22323',
+    maHinhAnh: 'HS22323',
+    hoTen: 'Phan Công Tra',
+    name: "hinhanh1",
+    type: "jpg",
+    size: "200x220",
+    nguoiTao: 'Tra Phan',
+    ngayUpdate: '2023-03-02'
+  }
+  showForm: boolean = false;
+  selectedImage: any;
+  VisibleModalEdit: boolean = false;
+
+
+  constructor() { }
 
   ngOnInit() {
-    this.previewImageSrc = this.user ? this.user.avatar : '';
-  }
-
-  async previewAndUploadImage(event: any) {
-    const file = event.target.files[0];
-    const maxWidth = this.maxWidthResize; // Kích thước tối đa của ảnh
-    const maxHeight = this.maxHeightResize; // Kích thước tối đa của ảnh
-    try {
-      const resizedFile = await this.resizeImage(file, maxWidth, maxHeight);
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        this.previewImageSrc = e.target.result;
-      };
-
-      reader.readAsDataURL(resizedFile);
-
-      // Gửi resizedFile lên API
-    } catch (error) {
-      console.error('Lỗi khi thay đổi kích thước ảnh:', error);
-    }
-  }
-
-  resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<File> {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-      img.onload = () => {
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height) {
-          if (width > maxWidth) {
-            height *= maxWidth / width;
-            width = maxWidth;
-          }
-        } else {
-          if (height > maxHeight) {
-            width *= maxHeight / height;
-            height = maxHeight;
-          }
-        }
-
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        canvas.toBlob((blob) => {
-          const resizedFile = new File([blob], file.name, {
-            type: file.type,
-            lastModified: Date.now(),
-          });
-          resolve(resizedFile);
-        }, file.type);
-      };
-      img.onerror = (error) => reject(error);
-    });
   }
 
   fileChangeEvent(event: any): void {
@@ -108,9 +60,6 @@ export class FormUserComponent implements OnInit {
 
     // set kích thước gốc của img khi upload hình mới
     this.getImageDimensions(event.target.files[0]);
-
-    // tạo ảnh thumbnail
-    this.previewAndUploadImage(event);
   }
 
   getImageDimensions(file: File) {
@@ -207,17 +156,24 @@ export class FormUserComponent implements OnInit {
   }
 
   onImageDataChange() {
-    if (this.user.avatar && !this.imageChangedEvent) {
-      this.getImageSize(this.user.avatar);
+    if (this.itemDetailModel.avatar && !this.imageChangedEvent) {
+      this.getImageSize(this.itemDetailModel.avatar);
     }
   }
 
-  fncloseForm() {
-    this.closeDraw$.emit();
+  openEdit() {
+    this.VisibleModalEdit = true;
   }
 
-  fnSaveInfo() {
-    this.saveDraw$.emit();
+  closeForm() {
+    this.VisibleModalEdit = false;
+  }
+
+  fnSaveEditImage() {
+  }
+
+  openEditImage() {
+    this.VisibleModalEdit = true;
   }
 
   handleCancelModal() {
@@ -235,6 +191,4 @@ export class FormUserComponent implements OnInit {
     this.isUploadImgCrop = false;
     this.flagCropperReady = false;
 }
-
-  fnSaveEditImage() {}
 }

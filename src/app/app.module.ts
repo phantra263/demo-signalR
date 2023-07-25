@@ -63,14 +63,16 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
-import { ListUserComponent } from './pages/user/listUser/listUser.component';
-import { DetailUserComponent } from './pages/user/detailUser/detailUser.component';
+import { ListHinhAnhComponent } from './pages/user/listHinhAnh/listHinhAnh.component';
+import { DetailHinhAnhComponent } from './pages/user/detailHinhAnh/detailHinhAnh.component';
 import { PushNotiComponent } from './pages/user/pushNoti/pushNoti.component';
 import { LoginComponent } from './pages/login/login.component';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { ListNotiComponent } from './pages/user/listNoti/listNoti.component';
-import { FormUserComponent } from './pages/user/formUser/formUser.component';
 import { DetailNotiComponent } from './pages/user/detailNoti/detailNoti.component';
+import { ChatComponent } from './pages/user/chat/chat.component';
+import { ChatService } from './services/chat.service';
+import { TimeMessFormatPipe } from './pipes/time-mess.pipe';
 
 registerLocaleData(en);
 
@@ -82,13 +84,14 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 @NgModule({
   declarations: [
     TimeAgoPipe,
+    TimeMessFormatPipe,
     AppComponent,
     BreadcrumbComponent,
 
-    FormUserComponent,
+    ChatComponent,
     ListNotiComponent,
-    DetailUserComponent,
-    ListUserComponent,
+    DetailHinhAnhComponent,
+    ListHinhAnhComponent,
     DetailNotiComponent,
     PushNotiComponent,
     LoginComponent,
@@ -161,6 +164,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   providers: [
     NzModalService,
     SignalRService,
+    ChatService,
 
     ThemeService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

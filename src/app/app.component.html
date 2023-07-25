@@ -10,9 +10,9 @@
 
     <ul class="menu-item" nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <li nz-menu-item>
-        <a nz-button nzType="link" routerLink="/nhanvien">
+        <a nz-button nzType="link" routerLink="/hinhanh">
           <span nz-icon nzType="file"></span>
-          <span>Nhân viên</span>
+          <span>Hình ảnh</span>
         </a>
       </li>
 
@@ -24,9 +24,16 @@
       </li>
 
       <li nz-menu-item>
-        <a nz-button nzType="link" routerLink="/listnoti">
+        <a nz-button nzType="link" [routerLink]="['/listnoti']">
           <span nz-icon nzType="file"></span>
           <span>List noti</span>
+        </a>
+      </li>
+
+      <li nz-menu-item>
+        <a nz-button nzType="link" [routerLink]="['/chat']">
+          <span nz-icon nzType="file"></span>
+          <span>Chat</span>
         </a>
       </li>
     </ul>

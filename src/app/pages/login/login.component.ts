@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
           this.authService.currentUser = this.jwtHelper.decodeToken(resp.data.jwToken);
 
           this.loading = false;
-          this.router.navigate(['/nhanvien']);
+          this.router.navigate(['/hinhanh']);
           window.location.reload();
 
         } else {

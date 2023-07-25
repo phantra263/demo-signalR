@@ -6,21 +6,27 @@
       </ng-template>
 
       <nz-tab nzTitle="Tất cả">
-        <nz-table #tblList [nzData]="listNoti" nzFrontPagination nzShowSizeChanger class="all-noti"
-          [nzTotal]="totalItems" [nzPageSize]="filterParams.PageSize" [nzPageIndex]="filterParams.PageNumber"
-          [nzScroll]="{x: 'auto' }">
-          <tbody>
-            <tr *ngFor="let data of tblList.data">
-              <td nzWidth="40px">
-                <input type="checkbox" [(ngModel)]="data.select" />
-              </td>
-              <td class="content-noti w-100" [ngStyle]="{'opacity': data.isRead ? '0.5' : ''}" [routerLink]="['/listnoti/chitiet', data.id]">
-                <p class="line-clamp"><b>{{ data.lastName }} {{ data.firstName }}</b> {{ data.content }}</p>
-              </td>
-              <td style="text-align: right;" nzWidth="130px">{{data.createAt | date: 'dd/MM/yyyy'}}</td>
-            </tr>
-          </tbody>
-        </nz-table>
+        <div class="wrap-noti">
+          <nz-table #tblList [nzData]="listNoti" nzFrontPagination nzShowSizeChanger class="all-noti" [ngClass]="isShowDetail ? 'show-detail' : ''"
+            [nzTotal]="totalItems" [nzPageSize]="filterParams.PageSize" [nzPageIndex]="filterParams.PageNumber"
+            [nzScroll]="{x: 'auto' }">
+            <tbody>
+              <tr *ngFor="let data of tblList.data">
+                <td nzWidth="40px">
+                  <input type="checkbox" [(ngModel)]="data.select" />
+                </td>
+                <td class="content-noti w-100" [ngStyle]="{'opacity': data.isRead ? '0.5' : ''}" (click)="openNoti(data)">
+                  <p class="line-clamp"><b>{{ data.lastName }} {{ data.firstName }}</b> {{ data.content }}</p>
+                </td>
+                <td style="text-align: right;" [hidden]="isShowDetail" nzWidth="130px">{{data.createAt | date: 'dd/MM/yyyy'}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+
+          <app-detailNoti style="flex: 1;" *ngIf="isShowDetail" [detailNoti]="notiSelected"></app-detailNoti>
+        </div>
+    
+
       </nz-tab>
       <nz-tab nzTitle="Chưa xem">
         <nz-table #tblList1 [nzData]="listNotiNotSeen" nzFrontPagination nzShowSizeChanger class="not-seen-noti"
@@ -34,7 +40,7 @@
             <td class="content-noti w-100" [ngStyle]="{'opacity': data.isRead ? '0.5' : ''}" [routerLink]="['/listnoti/chitiet', data.id]">
               <p class="line-clamp"><b>{{ data.lastName }} {{ data.firstName }}</b> {{ data.content }}</p>
             </td>
-            <td style="text-align: right;" nzWidth="130px">{{data.createAt | date: 'dd/MM/yyyy'}}</td>
+            <td style="text-align: right;" [hidden]="isShowDetail" nzWidth="130px">{{data.createAt | date: 'dd/MM/yyyy'}}</td>
           </tr>
         </tbody>
       </nz-table>

@@ -32,18 +32,32 @@ export class SignalRService {
     });
   }
 
- sendMessage(noti): void {
-    this.hubConnection.invoke('SendToAll', noti)
+  startConnectChat(): void {
+    const user = JSON.parse(localStorage.getItem('ttsuser'));
+    this.hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl(`http://192.168.2.173/chat?UserId=${user.id}`)
+      .withAutomaticReconnect()
+      .build();
+
+    this.hubConnection.start()
+      .then(() => {
+        console.log('Connect Chat started.');
+      })
+      .catch(err => console.log('Error while starting SignalR connection: ' + err));
+  }
+
+  sendMessage(noti): void {
+      this.hubConnection.invoke('SendToAll', noti)
+        .catch(err => console.error('Error while sending message: ', err));
+  }
+
+  sendMessageObject(noti): void {
+    this.hubConnection.invoke('SendToMultiReceiver', noti)
       .catch(err => console.error('Error while sending message: ', err));
- }
+  }
 
- sendMessageObject(noti): void {
-  this.hubConnection.invoke('SendToMultiReceiver', noti)
-    .catch(err => console.error('Error while sending message: ', err));
- }
-
- sendFlagNoti(noti): void {
-  this.hubConnection.invoke('UpdateNotification', noti)
-    .catch(err => console.error('Error while sending message: ', err));
- }
+  sendFlagNoti(noti): void {
+    this.hubConnection.invoke('UpdateNotification', noti)
+      .catch(err => console.error('Error while sending message: ', err));
+  }
 }

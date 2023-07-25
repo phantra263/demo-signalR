@@ -1,4 +1,4 @@
-<nz-card class="listnhanvien">
+<nz-card class="listhinhanh">
     <!-- Action bar -->
     <div nz-row [nzGutter]="24" class="s2-action-bar">
       <div nz-col nzFlex="150px">
@@ -42,13 +42,12 @@
       <thead>
         <tr>
           <th nzWidth="70px">Ảnh</th>
-          <th nzWidth="120px">Mã nhân viên</th>
-          <th nzWidth="170px">Họ tên</th>
-          <th nzWidth="120px">Ngày sinh</th>
-          <th nzWidth="80px">Giới tính</th>
-          <th nzWidth="200px">Quê quán</th>
-          <th nzWidth="120px">Tôn giáo</th>
-          <th nzWidth="120px">Phòng ban</th>
+          <th nzWidth="120px">Mã hình</th>
+          <th nzWidth="170px">File name</th>
+          <th nzWidth="100px">Định dạng</th>
+          <th nzWidth="80px">Size</th>
+          <th nzWidth="200px">Người tạo</th>
+          <th nzWidth="120px">Ngày update</th>
         </tr>
       </thead>
       <tbody>
@@ -65,26 +64,50 @@
                           margin-bottom: 0;
                           font-weight: bold;">
                           {{data.hoTen}}</p>
-                <p>{{data.chucVu}} ({{data.phongBan}})</p>
               </div>
             </ng-template>
           </td>
           <td>
-            <button nz-button nzType="link" [routerLink] = "['chitiet', data.maNhanVien]">{{data.maNhanVien}}</button>
+            <button nz-button nzType="link" [routerLink] = "['chitiet', data.maHinhAnh]">{{data.maHinhAnh}}</button>
           </td>
-          <td>{{data.hoTen}}</td>
-          <td>{{data.ngaySinh}}</td>
-          <td>{{data.gioiTinh}}</td>
-          <td>{{data.queQuan}}</td>
-          <td>{{data.tonGiao}}</td>
-          <td>{{data.phongBan}}</td>
+          <td>{{data.name}}</td>
+          <td>{{data.type}}</td>
+          <td>{{data.size}}</td>
+          <td>{{data.nguoiTao}}</td>
+          <td style="text-align: center;">{{data.ngayUpdate}}</td>
         </tr>
       </tbody>
     </nz-table>
-  <!-- Thêm mới -->
-  <app-formUser [user]="newUser" 
-                [titleForm]="'Thông tin nhân viên'"
-                [showForm]="showForm"
-                (closeDraw$)="fnCloseForm()"
-                (saveDraw$)="fnSaveForm()"></app-formUser>
 </nz-card>
+
+<!-- modal upload -->
+<nz-modal [(nzVisible)]="showForm" nzTitle="Upload hình ảnh" [nzClassName]="'modal-upload-image'" [nzStyle]="{ top: '20px' }"
+(nzOnCancel)="fncloseForm()" [nzWidth]="'750px'">
+  <!-- content -->
+  <div class="wrap-content" *nzModalContent>
+    <!-- avatar form tạo mới -->
+    <div class="img-avatar">
+      <ul class="wrap-preview">
+        <li *ngFor="let image of imagesPreview; let i = index" class="img-preview">
+          <img [src]="image.dataUrl" alt="{{ image.name }}" width="50">
+          <p>{{ image.name }}.{{image.type}}({{ image.width }} x {{ image.height }})</p>
+          <span nz-icon nzType="delete" nzTheme="outline" style="color: red; cursor: pointer;" (click)="removeImage(i)"></span>
+          <!-- <button nz-button nzType="danger" nzValue="small" (click)="removeImage(i)" class="btn-delete" nzShape="circle">X</button> -->
+        </li>
+      </ul>
+
+      <div>
+        <input type="file" (change)="previewAndUploadImages($event)" hidden #fileInput multiple accept=".png, .jpg, .jpeg"/>  
+        <button nz-button (click)="fileInput.click()">
+          <span nz-icon nzType="upload"></span>
+          {{ previewImageSrc ? "Thay đổi ảnh": "Tải lên ảnh" }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="fncloseForm()">Hủy</button>
+    <button nz-button nzType="primary" (click)="fnSaveForm()">Lưu</button>
+  </div>
+</nz-modal>

@@ -1,14 +1,12 @@
-<nz-card style="min-height: calc(100vh - 120px);">
-  <nz-page-header class="site-page-header" nzBackIcon>
-    <nz-page-header-title>Chi tiết thông báo</nz-page-header-title>
-    
-    <nz-page-header-subtitle>
-      <span nz-icon nzType="message" nzTheme="fill" style="color:#108ee9; font-size: 25px;"></span>
-    </nz-page-header-subtitle>
-    
-    <nz-page-header-content>
-      <div class="content">
-      </div>
-    </nz-page-header-content>
-  </nz-page-header>
-</nz-card>
+<div class="detail-noti" style="min-height: calc(100vh - 120px);">
+  <div class="header">
+    <div class="user">
+      <img [src]="'https://picsum.photos/200/300'" alt="">
+      <h2>{{detailNoti.firstName}} {{ detailNoti.lastName }}</h2>
+    </div>
+    <time>{{detailNoti.createAt}}</time>
+  </div>
+  <div class="body">
+    <p>{{detailNoti.content}}</p>
+  </div>
+</div>

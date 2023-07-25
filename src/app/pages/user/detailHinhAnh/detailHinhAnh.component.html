@@ -1,0 +1,92 @@
+<nz-card style="min-height: calc(100vh - 120px);">
+  <nz-page-header class="site-page-header" nzBackIcon>
+    <nz-page-header-title>{{itemDetailModel.maHinhAnh}}</nz-page-header-title>
+    
+    <nz-page-header-subtitle>
+      <span nz-icon nzType="file-image" nzTheme="fill" style="color:#108ee9; font-size: 25px;"></span>
+    </nz-page-header-subtitle>
+    
+    <nz-page-header-extra>
+      <nz-space>
+        <button *nzSpaceItem nz-button (click)="openEdit()">
+          <span nz-icon nzType="profile" nzTheme="outline"></span>Chỉnh sửa</button>
+        <button *nzSpaceItem nz-button nzType="primary" nzDanger>Xóa</button>
+      </nz-space>
+    </nz-page-header-extra>
+    
+    <nz-page-header-content>
+      <div class="content">
+        <div class="main">
+          <div class="col-avatar">
+            <div class="wrap-avatar">
+              <img nz-img [src]="itemDetailModel.avatar"/>
+            </div>
+            <nz-descriptions [nzColumn]="1">
+              <nz-descriptions-item nzTitle="Tên hình" [nzSpan]="1">{{itemDetailModel.name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Type" [nzSpan]="1">{{itemDetailModel.type}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Size" [nzSpan]="1">{{itemDetailModel.size}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Người tạo" [nzSpan]="1">{{itemDetailModel.nguoiTao}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Ngày update" [nzSpan]="2">{{itemDetailModel.ngayUpdate}}</nz-descriptions-item>
+            </nz-descriptions>
+          </div>
+        </div>
+      </div>
+    </nz-page-header-content>
+  </nz-page-header>
+</nz-card>
+
+<!-- modal edit image -->
+<nz-modal [(nzVisible)]="VisibleModalEdit" nzTitle="Chỉnh sửa ảnh" [nzClassName]="'modal-edit-image'"  [nzStyle]="{ top: '20px' }"
+    (nzOnCancel)="handleCancelModal()" [nzWidth]="'900px'">
+    <div *nzModalContent class="content-modal">
+      <nz-spin [nzSpinning]="isUploadImg" nzTip="Ảnh dung lớn có thể chờ lâu..." style="min-height: calc(100vh - 150px);">
+        <div class="btn-group">     
+          <input type="file" (change)="fileChangeEvent($event)" hidden #fileInput />
+          <button nz-button (click)="fileInput.click()">
+            <span nz-icon nzType="upload"></span>
+            Thay đổi ảnh
+          </button>
+          <button nz-button nzType="primary" (click)="rotateLeft()">Xoay trái</button>
+          <button nz-button nzType="primary" (click)="rotateRight()">Xoay phải</button>
+        </div>
+        <div class="wrap-crop-image">
+          <nz-spin [nzSpinning]="isUploadImgCrop" nzTip="Ảnh dung lớn có thể chờ lâu...">
+            <div class="image-crop">
+              <p class="t-center label-img" [hidden]="!flagCropperReady">Ảnh gốc({{imageOriginWidth}}x{{imageOriginHeight}})</p>
+              <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="false"
+                [containWithinAspectRatio]="true"
+                [aspectRatio]="1/1"
+                [autoCrop]="false"
+                [onlyScaleDown]="false"
+                [roundCropper]="false"
+                [canvasRotation]="canvasRotation"
+                [transform]="transform"
+                [alignImage]="'center'"
+                [imageURL] = "itemDetailModel.avatar"
+                [style.display]="showCropper ? null : 'none'"
+                (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded()"
+                (cropperReady)="cropperReady($event)"
+                (loadImageFailed)="loadImageFailed()"
+                #imageCropper>
+              </image-cropper>
+            </div>
+          </nz-spin>
+    
+          <button nz-button nzType="default" style="align-self: center;" (click)="startCrop()" [hidden]="!flagCropperReady"><span nz-icon nzType="scissor" nzTheme="outline" style="color: brown;"></span>Cắt ảnh</button>
+          <div class="image-preview">
+            <p class="t-center label-img" [hidden]="!flagCropperReady">Ảnh cắt({{imageCutWidth}}x{{imageCutHeight}})</p>
+            <img [src]="croppedImage"
+                (load)="onImageLoad($event)"
+                  [hidden]="!flagCropperReady" [style.border]="croppedImage ? '1px solid #eee' : 'none'"/>
+          </div>
+        </div>
+      </nz-spin>
+    </div>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancelModal()">Hủy</button>
+    <button nz-button nzType="primary" (click)="fnSaveEditImage()">Lưu</button>
+  </div>
+</nz-modal>

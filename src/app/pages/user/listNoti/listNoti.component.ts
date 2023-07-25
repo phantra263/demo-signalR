@@ -17,6 +17,8 @@ export class ListNotiComponent implements OnInit {
   listNotiNotSeen: any = [];
   totalItems: number = 0;
   dataSelectAll: boolean = false;
+  notiSelected: {};
+  isShowDetail: boolean = false;
 
   constructor(
     private notifiSrv : NotificationService
@@ -34,5 +36,10 @@ export class ListNotiComponent implements OnInit {
         this.listNotiNotSeen = this.listNoti.filter(item => !item.isRead);
       }
     );
+ }
+
+ openNoti(noti) {
+  this.isShowDetail = true;
+  this.notiSelected = noti;
  }
 }
